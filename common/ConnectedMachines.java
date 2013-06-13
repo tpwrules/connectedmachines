@@ -32,8 +32,6 @@ public class ConnectedMachines {
 
     @Mod.Init
     public void Initialize(FMLInitializationEvent e) {
-        // do block registration
-        GameRegistry.registerBlock(blockController, "CMController");
-        LanguageRegistry.addName(blockController, "Machine Controller");
+        blockController = new BlockController(config.blockControllerID);
     }
 }
