@@ -1,4 +1,4 @@
-package tpw_rules.connectedmachines;
+package tpw_rules.connectedmachines.common;
 
 
 import cpw.mods.fml.common.Mod;
@@ -11,7 +11,7 @@ public class ConnectedMachines {
     @Mod.Instance
     public static ConnectedMachines instance;
 
-    @SidedProxy(clientSide="tpw_rules.connectedmachines.ClientProxy", serverSide="tpw_rules.connectedmachines.CommonProxy")
+    @SidedProxy(clientSide="tpw_rules.connectedmachines.common.ClientProxy", serverSide="tpw_rules.connectedmachines.common.CommonProxy")
     public static CommonProxy proxy;
 
     @Mod.Init
