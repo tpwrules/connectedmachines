@@ -3,18 +3,22 @@ package tpw_rules.connectedmachines.block;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import tpw_rules.connectedmachines.common.ConnectedMachines;
+import tpw_rules.connectedmachines.tile.TileController;
 
-public class BlockController extends Block {
+public class BlockController extends Block implements ITileEntityProvider {
     public BlockController(int id) {
         super(id, Material.iron);
         setUnlocalizedName("Machine Controller");
         setCreativeTab(ConnectedMachines.tabMachines);
         setHardness(5.0F);
         setResistance(10.0F);
-        setStepSound(super.soundMetalFootstep);
+        setStepSound(Block.soundMetalFootstep);
 
         GameRegistry.registerBlock(this, "CMController");
         LanguageRegistry.addName(this, "Machine Controller");
@@ -23,5 +27,9 @@ public class BlockController extends Block {
     @Override
     public void registerIcons(IconRegister iconRegister) {
         this.blockIcon = iconRegister.registerIcon("connectedmachines:blockController");
+    }
+
+    public TileEntity createNewTileEntity(World world) {
+        return new TileController();
     }
 }
