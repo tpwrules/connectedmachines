@@ -14,7 +14,7 @@ public class ConnectedMachines {
     @Mod.Instance
     public static ConnectedMachines instance;
 
-    @SidedProxy(clientSide="tpw_rules.connectedmachines.common.ClientProxy", serverSide="tpw_rules.connectedmachines.common.CommonProxy")
+    @SidedProxy(clientSide="tpw_rules.connectedmachines.client.ClientProxy", serverSide="tpw_rules.connectedmachines.common.CommonProxy")
     public static CommonProxy proxy;
 
     // block instances
