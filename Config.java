@@ -12,5 +12,7 @@ public class Config {
         config.load();
 
         blockControllerID = config.getBlock("Controller Block", 2600).getInt();
+
+        config.save();
     }
 }
