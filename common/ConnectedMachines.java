@@ -9,6 +9,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import tpw_rules.connectedmachines.Config;
 import tpw_rules.connectedmachines.block.*;
+import tpw_rules.connectedmachines.creative.TabMachines;
 
 @Mod(modid="connectedmachines", name="Connected Machines", version="1.0")
 
@@ -24,6 +25,8 @@ public class ConnectedMachines {
 
     public static Config config;
 
+    public static TabMachines tabMachines;
+
     @Mod.PreInit
     public void PreInitialize(FMLPreInitializationEvent e) {
         config = new Config();
@@ -32,6 +35,7 @@ public class ConnectedMachines {
 
     @Mod.Init
     public void Initialize(FMLInitializationEvent e) {
+        tabMachines = new TabMachines();
         blockController = new BlockController(config.blockControllerID);
     }
 }
