@@ -12,6 +12,9 @@ public class BlockController extends Block {
         super(id, Material.iron);
         setUnlocalizedName("Machine Controller");
         setCreativeTab(ConnectedMachines.tabMachines);
+        setHardness(5.0F);
+        setResistance(10.0F);
+        setStepSound(super.soundMetalFootstep);
 
         GameRegistry.registerBlock(this, "CMController");
         LanguageRegistry.addName(this, "Machine Controller");
