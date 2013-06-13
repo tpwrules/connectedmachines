@@ -8,7 +8,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import tpw_rules.connectedmachines.block.*;
 
-@Mod(modid="connected_machines", name="Connected Machines", version="1.0")
+@Mod(modid="connectedmachines", name="Connected Machines", version="1.0")
 
 public class ConnectedMachines {
     @Mod.Instance
