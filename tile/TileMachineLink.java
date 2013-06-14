@@ -10,7 +10,6 @@ public class TileMachineLink extends TileEntity {
     public boolean[] connectedNeighbors;
 
     public TileMachineLink() {
-        checkNeighbors = true; // we need to check our neighbors
         connectedNeighbors = new boolean[6]; // which neighbors we are connected to
     }
 
@@ -18,6 +17,7 @@ public class TileMachineLink extends TileEntity {
     public void updateEntity() {
         if (checkNeighbors) { // update neighbors if necessary
             performNeighborCheck();
+            worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord); // make sure our render updates properly
         }
     }
 
