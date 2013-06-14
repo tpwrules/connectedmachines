@@ -52,7 +52,7 @@ public class WCoord {
                 z--;
                 break;
         }
-        return null;
+        return this;
     }
 }
 
