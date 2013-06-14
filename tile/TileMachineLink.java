@@ -1,6 +1,8 @@
 package tpw_rules.connectedmachines.tile;
 
 
-public class TileMachineLink extends TileLinkable {
+import net.minecraft.tileentity.TileEntity;
+
+public class TileMachineLink extends TileEntity {
 
 }
