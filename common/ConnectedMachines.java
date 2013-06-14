@@ -19,6 +19,7 @@ public class ConnectedMachines {
 
     // block instances
     public static BlockController blockController;
+    public static BlockMachineLink blockMachineLink;
 
     public static TabMachines tabMachines;
 
@@ -31,5 +32,6 @@ public class ConnectedMachines {
     public void Initialize(FMLInitializationEvent e) {
         tabMachines = new TabMachines();
         blockController = new BlockController(Config.blockControllerID);
+        blockMachineLink = new BlockMachineLink(Config.blockMachineLinkID);
     }
 }
