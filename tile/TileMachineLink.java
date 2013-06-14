@@ -3,6 +3,7 @@ package tpw_rules.connectedmachines.tile;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
+import tpw_rules.connectedmachines.util.Util;
 import tpw_rules.connectedmachines.util.WCoord;
 
 public class TileMachineLink extends TileEntity {
@@ -10,6 +11,7 @@ public class TileMachineLink extends TileEntity {
     public boolean[] connectedNeighbors;
 
     public TileMachineLink() {
+        checkNeighbors = true;
         connectedNeighbors = new boolean[6]; // which neighbors we are connected to
     }
 
@@ -17,7 +19,8 @@ public class TileMachineLink extends TileEntity {
     public void updateEntity() {
         if (checkNeighbors) { // update neighbors if necessary
             performNeighborCheck();
-            worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord); // make sure our render updates properly
+            Util.log("Change!", connectedNeighbors[ForgeDirection.DOWN.ordinal()]);
+            worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord); // make sure we look connected
         }
     }
 

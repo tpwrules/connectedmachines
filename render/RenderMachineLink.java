@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.tile.TileMachineLink;
+import tpw_rules.connectedmachines.util.Util;
 
 
 public class RenderMachineLink implements ISimpleBlockRenderingHandler {
@@ -24,7 +25,7 @@ public class RenderMachineLink implements ISimpleBlockRenderingHandler {
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
         // get tile for this machine link
         TileMachineLink tile = (TileMachineLink)world.getBlockTileEntity(x, y, z);
-
+        Util.log("Beauty!");
         // render center piece
         renderer.setRenderBounds(.4, .4, .4, .6, .6, .6);
         renderer.renderStandardBlock(block, x, y, z);
