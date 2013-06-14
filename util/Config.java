@@ -1,4 +1,4 @@
-package tpw_rules.connectedmachines;
+package tpw_rules.connectedmachines.util;
 
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;

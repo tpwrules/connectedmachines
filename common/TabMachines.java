@@ -1,4 +1,4 @@
-package tpw_rules.connectedmachines.creative;
+package tpw_rules.connectedmachines.common;
 
 
 import cpw.mods.fml.relauncher.Side;
