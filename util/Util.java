@@ -1,14 +1,15 @@
 package tpw_rules.connectedmachines.util;
 
 
-import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 
 public class Util {
     public static boolean debugging = true;
 
     public static void log(Object... args) {
         if (!debugging) return;
-        if (FMLClientHandler.instance().getClient() == null) {
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
             System.out.print("[SERVER] ");
         } else {
             System.out.print("[CLIENT] ");
