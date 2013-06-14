@@ -6,13 +6,16 @@ import cpw.mods.fml.client.FMLClientHandler;
 public class Util {
     public boolean debugging = true;
 
-    public void log(String msg) {
+    public void log(Object... args) {
         if (!debugging) return;
         if (FMLClientHandler.instance().getClient().theWorld.isRemote) {
             System.out.print("[SERVER] ");
         } else {
             System.out.print("[CLIENT] ");
         }
-        System.out.println(msg);
+        for (Object thing : args) {
+            System.out.print(thing);
+        }
+        System.out.println("");
     }
 }
