@@ -1,7 +1,6 @@
 package tpw_rules.connectedmachines.tile;
 
 
-import com.sun.corba.se.impl.orb.ParserTable;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.util.WCoord;
