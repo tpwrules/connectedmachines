@@ -8,6 +8,10 @@ public class TileController extends TileEntity implements ILinkable {
     public boolean linkConnected = false;
     public TileController tileController = null;
 
+    public TileController() {
+        setLink(this); // we are linked to ourselves
+    }
+
     public void setLink(TileController newController) {
         tileController = newController;
         linkConnected = !(newController == null);
