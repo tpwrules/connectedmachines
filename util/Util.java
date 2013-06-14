@@ -8,7 +8,7 @@ public class Util {
 
     public static void log(Object... args) {
         if (!debugging) return;
-        if (FMLClientHandler.instance().getClient().theWorld.isRemote) {
+        if (FMLClientHandler.instance().getClient() == null) {
             System.out.print("[SERVER] ");
         } else {
             System.out.print("[CLIENT] ");
