@@ -35,4 +35,9 @@ public class BlockMachineLink extends Block implements ITileEntityProvider {
     public int getRenderType() {
         return renderID;
     }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
 }
