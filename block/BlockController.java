@@ -28,6 +28,7 @@ public class BlockController extends Block implements ITileEntityProvider {
         setStepSound(Block.soundMetalFootstep);
 
         GameRegistry.registerBlock(this, "CMController");
+        GameRegistry.registerTileEntity(TileController.class, "CMTEController");
         LanguageRegistry.addName(this, "Machine Controller");
     }
 
