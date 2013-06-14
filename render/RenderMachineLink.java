@@ -25,7 +25,10 @@ public class RenderMachineLink implements ISimpleBlockRenderingHandler {
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
         // get tile for this machine link
         TileMachineLink tile = (TileMachineLink)world.getBlockTileEntity(x, y, z);
-        Util.log("Beauty!");
+        if (tile.special) {
+            System.out.print("Special!");
+        }
+        Util.log("Beauty!", tile.connectedNeighbors[ForgeDirection.DOWN.ordinal()]);
         // render center piece
         renderer.setRenderBounds(.4, .4, .4, .6, .6, .6);
         renderer.renderStandardBlock(block, x, y, z);

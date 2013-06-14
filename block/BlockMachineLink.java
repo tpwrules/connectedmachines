@@ -6,10 +6,12 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import tpw_rules.connectedmachines.common.ConnectedMachines;
 import tpw_rules.connectedmachines.tile.TileMachineLink;
+import tpw_rules.connectedmachines.util.Util;
 
 public class BlockMachineLink extends Block implements ITileEntityProvider {
     public int renderID;
@@ -35,7 +37,13 @@ public class BlockMachineLink extends Block implements ITileEntityProvider {
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, int neighborID) {
         // mark that neighbors need to be checked
+        Util.log("Friendship!");
         ((TileMachineLink)world.getBlockTileEntity(x, y, z)).checkNeighbors = true;
+    }
+
+    @Override
+    public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
+        ((TileMachineLink)world.getBlockTileEntity(x, y, z)).special = true;
     }
 
     @Override
