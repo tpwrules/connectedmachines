@@ -31,6 +31,10 @@ public class WCoord {
         return world.getBlockTileEntity(x, y, z);
     }
 
+    public int getBlockID() {
+        return world.getBlockId(x, y, z);
+    }
+
     public WCoord adjacent(ForgeDirection dir) {
         switch (dir) {
             case EAST:
