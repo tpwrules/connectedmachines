@@ -20,19 +20,16 @@ public class ConnectedMachines {
     // block instances
     public static BlockController blockController;
 
-    public static Config config;
-
     public static TabMachines tabMachines;
 
     @Mod.PreInit
     public void PreInitialize(FMLPreInitializationEvent e) {
-        config = new Config();
-        config.loadConfig(e);
+        Config.loadConfig(e);
     }
 
     @Mod.Init
     public void Initialize(FMLInitializationEvent e) {
         tabMachines = new TabMachines();
-        blockController = new BlockController(config.blockControllerID);
+        blockController = new BlockController(Config.blockControllerID);
     }
 }
