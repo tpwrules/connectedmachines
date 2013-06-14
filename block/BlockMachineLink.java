@@ -12,6 +12,8 @@ import tpw_rules.connectedmachines.common.ConnectedMachines;
 import tpw_rules.connectedmachines.tile.TileMachineLink;
 
 public class BlockMachineLink extends Block implements ITileEntityProvider {
+    public int renderID;
+
     public BlockMachineLink(int id) {
         super(id, Material.rock);
         setCreativeTab(ConnectedMachines.tabMachines);
@@ -27,5 +29,10 @@ public class BlockMachineLink extends Block implements ITileEntityProvider {
     @Override
     public TileEntity createNewTileEntity(World world) {
         return new TileMachineLink();
+    }
+
+    @Override
+    public int getRenderType() {
+        return renderID;
     }
 }

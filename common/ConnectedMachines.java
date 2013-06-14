@@ -33,5 +33,7 @@ public class ConnectedMachines {
         tabMachines = new TabMachines();
         blockController = new BlockController(Config.blockControllerID);
         blockMachineLink = new BlockMachineLink(Config.blockMachineLinkID);
+
+        proxy.registerRenderers();
     }
 }
