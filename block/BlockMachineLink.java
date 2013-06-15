@@ -37,7 +37,6 @@ public class BlockMachineLink extends Block implements ITileEntityProvider {
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, int neighborID) {
         // mark that neighbors need to be checked
-        Util.log("Friendship!");
         ((TileMachineLink)world.getBlockTileEntity(x, y, z)).checkNeighbors = true;
     }
 

@@ -3,7 +3,6 @@ package tpw_rules.connectedmachines.network;
 
 import cpw.mods.fml.common.network.Player;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.common.DimensionManager;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
