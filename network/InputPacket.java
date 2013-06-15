@@ -1,5 +1,5 @@
 package tpw_rules.connectedmachines.network;
 
 
-public class InputPacket {
+public class InputPacket extends Packet {
 }
