@@ -11,4 +11,7 @@ public class PacketHandler implements IPacketHandler {
     public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
 
     }
+
+    public static void handlePacket(InputPacket packet) {
+    }
 }
