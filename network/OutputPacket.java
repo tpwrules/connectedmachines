@@ -44,7 +44,7 @@ public class OutputPacket extends Packet {
 
     public Packet250CustomPayload getMinecraftPacket() {
         Packet250CustomPayload packet = new Packet250CustomPayload();
-        packet.channel = "ConnectedMachines";
+        packet.channel = "ConnMachines";
         packet.data = bos.toByteArray();
         packet.length = bos.size();
         return packet;
