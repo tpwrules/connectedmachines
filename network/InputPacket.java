@@ -14,6 +14,6 @@ public class InputPacket extends Packet {
 
     public InputPacket(byte[] data) {
         this.data = new DataInputStream(new ByteArrayInputStream(data));
-        type =
+        //type =
     }
 }
