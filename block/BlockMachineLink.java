@@ -6,10 +6,17 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.common.ConnectedMachines;
 import tpw_rules.connectedmachines.tile.TileMachineLink;
+import tpw_rules.connectedmachines.util.Util;
+
+import java.util.List;
 
 public class BlockMachineLink extends Block implements ITileEntityProvider {
     public int renderID;
@@ -36,6 +43,40 @@ public class BlockMachineLink extends Block implements ITileEntityProvider {
     public void onNeighborBlockChange(World world, int x, int y, int z, int neighborID) {
         // mark that neighbors need to be checked
         ((TileMachineLink)world.getBlockTileEntity(x, y, z)).checkNeighbors = true;
+    }
+
+    @Override
+    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
+        // get this block's connections
+        boolean[] connections = ((TileMachineLink)world.getBlockTileEntity(x, y, z)).connectedNeighbors;
+        Util.log(
+                connections[ForgeDirection.WEST.ordinal()] ? 0f : .4f,
+                connections[ForgeDirection.DOWN.ordinal()] ? 0f : .4f,
+                connections[ForgeDirection.NORTH.ordinal()] ? 0f : .4f,
+                connections[ForgeDirection.EAST.ordinal()] ? 1f : .6f,
+                connections[ForgeDirection.UP.ordinal()] ? 1f : .6f,
+                connections[ForgeDirection.SOUTH.ordinal()] ? 1f : .6f
+        );
+        setBlockBounds(
+                connections[ForgeDirection.WEST.ordinal()] ? 0f : .4f,
+                connections[ForgeDirection.DOWN.ordinal()] ? 0f : .4f,
+                connections[ForgeDirection.NORTH.ordinal()] ? 0f : .4f,
+                connections[ForgeDirection.EAST.ordinal()] ? 1f : .6f,
+                connections[ForgeDirection.UP.ordinal()] ? 1f : .6f,
+                connections[ForgeDirection.SOUTH.ordinal()] ? 1f : .6f
+        );
+    }
+
+    @Override
+    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
+        setBlockBoundsBasedOnState(world, x, y, z);
+        return super.getSelectedBoundingBoxFromPool(world, x, y, z);
+    }
+
+    @Override
+    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB box, List results, Entity entity) {
+        setBlockBoundsBasedOnState(world, x, y, z);
+        super.addCollisionBoxesToList(world, x, y, z, box, results, entity);
     }
 
     @Override
