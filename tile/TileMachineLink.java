@@ -3,6 +3,10 @@ package tpw_rules.connectedmachines.tile;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.network.ITileEntityPacketHandler;
@@ -10,6 +14,7 @@ import tpw_rules.connectedmachines.network.InputPacket;
 import tpw_rules.connectedmachines.network.OutputPacket;
 import tpw_rules.connectedmachines.network.PacketType;
 import tpw_rules.connectedmachines.util.Config;
+import tpw_rules.connectedmachines.util.Util;
 import tpw_rules.connectedmachines.util.WCoord;
 
 public class TileMachineLink extends TileEntity implements ITileEntityPacketHandler {
@@ -49,6 +54,27 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
     }
 
     @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        // retrieve which neighbors we are connected to
+        byte[] sides = tag.getByteArray("connectedNeighbors");
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            connectedNeighbors[side.ordinal()] = sides[side.ordinal()] != 0;
+        }
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+        // write which neighbors we are connected to
+        byte[] sides = new byte[6];
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            sides[side.ordinal()] = connectedNeighbors[side.ordinal()] ? (byte)1 : (byte)0;
+        }
+        tag.setByteArray("connectedNeighbors", sides);
+    }
+
+    @Override
     public void handlePacket(InputPacket packet) {
         switch (packet.type) {
             case MACHINE_LINK_REDRAW:
@@ -62,5 +88,18 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
                 worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
                 break;
         }
+    }
+
+    @Override
+    public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
+        this.readFromNBT(packet.customParam1);
+    }
+
+    @Override
+    public Packet getDescriptionPacket()
+    {
+        NBTTagCompound tag = new NBTTagCompound();
+        this.writeToNBT(tag);
+        return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, tag);
     }
 }
