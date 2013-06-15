@@ -25,6 +25,7 @@ public class RenderMachineLink implements ISimpleBlockRenderingHandler {
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
         // get tile for this machine link
         TileMachineLink tile = (TileMachineLink)world.getBlockTileEntity(x, y, z);
+        Util.log(world.getBlockTileEntity(x, y, z), " ", tile);
 
         if (tile.special) {
             System.out.print("Special!");
