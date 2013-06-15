@@ -5,10 +5,14 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkMod;
 import tpw_rules.connectedmachines.block.*;
+import tpw_rules.connectedmachines.network.PacketHandler;
 import tpw_rules.connectedmachines.util.Config;
 
 @Mod(modid="connectedmachines", name="Connected Machines", version="1.0")
+@NetworkMod(clientSideRequired=true, serverSideRequired=false,
+        channels={"CMMachineLinkUpdateNeighbors"}, packetHandler=PacketHandler.class)
 
 public class ConnectedMachines {
     @Mod.Instance
