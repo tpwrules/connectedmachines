@@ -12,7 +12,7 @@ import tpw_rules.connectedmachines.util.Config;
 
 @Mod(modid="connectedmachines", name="Connected Machines", version="1.0")
 @NetworkMod(clientSideRequired=true, serverSideRequired=false,
-        channels={"CMMachineLinkUpdateNeighbors"}, packetHandler=PacketHandler.class)
+        channels={"ConnectedMachines"}, packetHandler=PacketHandler.class)
 
 public class ConnectedMachines {
     @Mod.Instance
