@@ -57,4 +57,12 @@ public class OutputPacket extends Packet {
     public void sendServer() {
         PacketDispatcher.sendPacketToServer(getMinecraftPacket());
     }
+
+    public void sendDimension() {
+        PacketDispatcher.sendPacketToAllInDimension(getMinecraftPacket(), tile.worldObj.getWorldInfo().getDimension());
+    }
+
+    public void sendDimension(int dim) {
+        PacketDispatcher.sendPacketToAllInDimension(getMinecraftPacket(), dim);
+    }
 }
