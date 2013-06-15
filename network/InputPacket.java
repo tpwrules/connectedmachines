@@ -1,6 +1,8 @@
 package tpw_rules.connectedmachines.network;
 
 
+import cpw.mods.fml.common.network.Player;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.DimensionManager;
 
 import java.io.ByteArrayInputStream;
@@ -12,7 +14,7 @@ public class InputPacket extends Packet {
     public PacketType type;
     public ITileEntityPacketHandler tile;
 
-    public InputPacket(byte[] inData) {
+    public InputPacket(byte[] inData, Player player) {
         this.data = new DataInputStream(new ByteArrayInputStream(inData));
         try {
             type = PacketType.values[data.readByte()];
@@ -21,7 +23,7 @@ public class InputPacket extends Packet {
             int y = data.readInt();
             int z = data.readInt();
             if (y != -1) {
-                tile = (ITileEntityPacketHandler) DimensionManager.getWorld(dim).getBlockTileEntity(x, y, z);
+                tile = (ITileEntityPacketHandler)((EntityPlayer)player).worldObj.getBlockTileEntity(x, y, z);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
