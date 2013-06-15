@@ -23,11 +23,12 @@ public class OutputPacket extends Packet {
     public OutputPacket(PacketType type, int size, TileEntity tile) {
         this.tile = tile;
         this.type = type;
-        bos = new ByteArrayOutputStream(size+13);
+        bos = new ByteArrayOutputStream(size+17);
         data = new DataOutputStream(bos);
         try {
             data.writeByte((byte)(type.ordinal()));
             if (tile != null) {
+                data.writeInt(tile.worldObj.getWorldInfo().getDimension());
                 data.writeInt(tile.xCoord);
                 data.writeInt(tile.yCoord);
                 data.writeInt(tile.zCoord);
