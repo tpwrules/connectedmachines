@@ -2,11 +2,7 @@ package tpw_rules.connectedmachines.network;
 
 
 public enum PacketType {
-    // messages that go to the default handler
+    MACHINE_LINK_REDRAW;
 
-    // boundary message type
-    TILE_ENTITY_MESSAGE_BOUNDARY,
-
-    // messages destined for tileentities
-    MACHINE_LINK_REDRAW
+    public static PacketType[] values = PacketType.values();
 }
