@@ -14,13 +14,11 @@ import tpw_rules.connectedmachines.network.InputPacket;
 import tpw_rules.connectedmachines.network.OutputPacket;
 import tpw_rules.connectedmachines.network.PacketType;
 import tpw_rules.connectedmachines.util.Config;
-import tpw_rules.connectedmachines.util.Util;
 import tpw_rules.connectedmachines.util.WCoord;
 
 public class TileMachineLink extends TileEntity implements ITileEntityPacketHandler {
     public boolean checkNeighbors; // set when the link needs to check its neighbors for connections
     public boolean[] connectedNeighbors;
-    public boolean special = false;
 
     public TileMachineLink() {
         checkNeighbors = true;
