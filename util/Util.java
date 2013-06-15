@@ -16,7 +16,7 @@ public class Util {
         }
         for (Object thing : args) {
             System.out.print(thing);
-            System.out.print("");
+            System.out.print(" ");
         }
         System.out.println("");
     }
