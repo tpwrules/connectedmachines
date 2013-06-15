@@ -16,6 +16,7 @@ import tpw_rules.connectedmachines.util.WCoord;
 public class TileMachineLink extends TileEntity implements ITileEntityPacketHandler {
     public boolean checkNeighbors; // set when the link needs to check its neighbors for connections
     public boolean[] connectedNeighbors;
+    public boolean connectUp;
     public boolean special = false;
 
     public TileMachineLink() {
@@ -30,7 +31,7 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
             if (special) {
                 System.out.print("Special!");
             }
-            Util.log("Change!", connectedNeighbors[ForgeDirection.DOWN.ordinal()]);
+            Util.log("Change!", connectedNeighbors[ForgeDirection.UP.ordinal()]);
         } else {
             checkNeighbors = false;
         }
@@ -49,6 +50,7 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
                 throw new RuntimeException(e);
             }
         }
+        connectUp = connectedNeighbors[ForgeDirection.UP.ordinal()];
         packet.sendDimension(); // send the packet off to the client
         checkNeighbors = false; // we don't need to check neighbors anymore
     }
@@ -64,6 +66,7 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
                         throw new RuntimeException(e);
                     }
                 }
+                connectUp = connectedNeighbors[ForgeDirection.UP.ordinal()];
                 Util.log("Impetus!", connectedNeighbors[ForgeDirection.UP.ordinal()]);
                 worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
                 break;
