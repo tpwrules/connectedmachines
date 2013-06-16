@@ -12,13 +12,11 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.common.ConnectedMachines;
+import tpw_rules.connectedmachines.render.Texture;
 import tpw_rules.connectedmachines.tile.TileController;
 import tpw_rules.connectedmachines.tile.TileLinkable;
 
 public class BlockController extends Block implements ITileEntityProvider {
-    public Icon blockUnlinkedIcon;
-    public Icon blockLinkedIcon;
-
     public BlockController(int id) {
         super(id, Material.iron);
         setUnlocalizedName("Machine Controller");
@@ -34,19 +32,18 @@ public class BlockController extends Block implements ITileEntityProvider {
 
     @Override
     public void registerIcons(IconRegister iconRegister) {
-        blockUnlinkedIcon = iconRegister.registerIcon("connectedmachines:blockController");
-        blockLinkedIcon = iconRegister.registerIcon("connectedmachines:blockLinked");
-        this.blockIcon = blockUnlinkedIcon;
+        Texture.loadTextures(iconRegister);
+        this.blockIcon = Texture.blockSide;
     }
 
     @Override
     public Icon getBlockTexture(IBlockAccess blockAccess, int x, int y, int z, int side) {
         if (ForgeDirection.getOrientation(side) == ForgeDirection.UP) {
             if (((TileLinkable)blockAccess.getBlockTileEntity(x, y, z)).linkConnected) {
-                return blockLinkedIcon;
+                return Texture.blockLinked;
             }
         }
-        return blockUnlinkedIcon;
+        return Texture.blockController;
     }
 
     @Override
