@@ -14,7 +14,6 @@ import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.common.ConnectedMachines;
 import tpw_rules.connectedmachines.render.Texture;
 import tpw_rules.connectedmachines.tile.TileController;
-import tpw_rules.connectedmachines.tile.TileLinkable;
 
 public class BlockController extends Block implements ITileEntityProvider {
     public BlockController(int id) {
@@ -38,11 +37,6 @@ public class BlockController extends Block implements ITileEntityProvider {
 
     @Override
     public Icon getBlockTexture(IBlockAccess blockAccess, int x, int y, int z, int side) {
-        if (ForgeDirection.getOrientation(side) == ForgeDirection.UP) {
-            if (((TileLinkable)blockAccess.getBlockTileEntity(x, y, z)).linkConnected) {
-                return Texture.blockLinked;
-            }
-        }
         return Texture.blockController;
     }
 

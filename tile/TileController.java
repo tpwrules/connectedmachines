@@ -1,8 +1,10 @@
 package tpw_rules.connectedmachines.tile;
 
 
-public class TileController extends TileLinkable {
+import net.minecraft.tileentity.TileEntity;
+
+public class TileController extends TileEntity {
     public TileController() {
-        setLink(this); // we are linked to ourselves
+
     }
 }
