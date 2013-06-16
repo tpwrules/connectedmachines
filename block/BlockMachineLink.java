@@ -6,6 +6,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
@@ -14,6 +15,7 @@ import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.common.ConnectedMachines;
 import tpw_rules.connectedmachines.tile.TileMachineLink;
 
+import java.util.List;
 
 public class BlockMachineLink extends Block implements ITileEntityProvider {
     public int renderID;
@@ -57,9 +59,9 @@ public class BlockMachineLink extends Block implements ITileEntityProvider {
     }
 
     @Override
-    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
+    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB box, List results, Entity entity) {
         setBlockBoundsBasedOnState(world, x, y, z);
-        return super.getSelectedBoundingBoxFromPool(world, x, y, z);
+        super.addCollisionBoxesToList(world, x, y, z, box, results, entity);
     }
 
     @Override
