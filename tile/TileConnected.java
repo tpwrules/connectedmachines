@@ -18,7 +18,7 @@ public class TileConnected extends TileEntity {
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        facing = ForgeDirection.getOrientation(tag.getByte("Facing"));
+        facing = ForgeDirection.getOrientation(tag.getByte("facing"));
     }
 
     @Override

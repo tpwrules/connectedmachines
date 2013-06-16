@@ -16,7 +16,6 @@ import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.common.ConnectedMachines;
 import tpw_rules.connectedmachines.render.Texture;
 import tpw_rules.connectedmachines.tile.TileConnected;
-import tpw_rules.connectedmachines.util.Util;
 
 
 public class BlockConnected extends BlockContainer {
@@ -61,7 +60,6 @@ public class BlockConnected extends BlockContainer {
     @Override
     public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side) {
         TileConnected tile = (TileConnected)world.getBlockTileEntity(x, y, z);
-        Util.log("facing", tile.facing.toString());
         if (ForgeDirection.getOrientation(side) == ForgeDirection.UP) {
             return Texture.blockSide;
         }
