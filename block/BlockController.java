@@ -35,7 +35,7 @@ public class BlockController extends Block implements ITileEntityProvider {
     @Override
     public void registerIcons(IconRegister iconRegister) {
         blockUnlinkedIcon = iconRegister.registerIcon("connectedmachines:blockController");
-        blockLinkedIcon = iconRegister.registerIcon("connectedmachines:blockControllerLinked");
+        blockLinkedIcon = iconRegister.registerIcon("connectedmachines:blockLinked");
         this.blockIcon = blockUnlinkedIcon;
     }
 
