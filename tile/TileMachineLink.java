@@ -14,7 +14,6 @@ import tpw_rules.connectedmachines.network.ITileEntityPacketHandler;
 import tpw_rules.connectedmachines.network.InputPacket;
 import tpw_rules.connectedmachines.network.OutputPacket;
 import tpw_rules.connectedmachines.network.PacketType;
-import tpw_rules.connectedmachines.util.Config;
 import tpw_rules.connectedmachines.util.WCoord;
 
 public class TileMachineLink extends TileEntity implements ITileEntityPacketHandler, ILinkable {
