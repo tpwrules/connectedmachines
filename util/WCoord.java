@@ -35,7 +35,7 @@ public class WCoord {
         return world.getBlockId(x, y, z);
     }
 
-    public WCoord adjacent(ForgeDirection dir) {
+    public WCoord move(ForgeDirection dir) {
         switch (dir) {
             case EAST:
                 x++;

@@ -39,7 +39,7 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
         OutputPacket packet = new OutputPacket(PacketType.MACHINE_LINK_REDRAW, 0, this);
         // check all sides for connections
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            boolean connected = new WCoord(this).adjacent(side).getBlockID() == Config.blockMachineLinkID;
+            boolean connected = new WCoord(this).move(side).getBlockID() == Config.blockMachineLinkID;
             connectedNeighbors[side.ordinal()] = connected;
             try {
                 packet.data.writeBoolean(connected);
