@@ -9,10 +9,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.common.ConnectedMachines;
+import tpw_rules.connectedmachines.render.Texture;
 import tpw_rules.connectedmachines.tile.TileMachineLink;
 
 import java.util.List;
@@ -42,6 +44,15 @@ public class BlockMachineLink extends Block implements ITileEntityProvider {
     public void onNeighborBlockChange(World world, int x, int y, int z, int neighborID) {
         // mark that neighbors need to be checked
         ((TileMachineLink)world.getBlockTileEntity(x, y, z)).checkNeighbors = true;
+    }
+
+    @Override
+    public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side) {
+        TileMachineLink tile = (TileMachineLink)world.getBlockTileEntity(x, y, z);
+        if (tile.link != null) {
+            return Texture.blockLinked;
+        }
+        return Texture.blockSide;
     }
 
     @Override
