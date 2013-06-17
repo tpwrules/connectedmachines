@@ -7,12 +7,22 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
+import tpw_rules.connectedmachines.api.ILinkable;
 
-public class TileController extends TileEntity {
+public class TileController extends TileEntity implements ILinkable {
     public ForgeDirection facing;
 
     public TileController() {
         facing = ForgeDirection.UP;
+    }
+
+    @Override
+    public void setLink(TileController link) {
+    }
+
+    @Override
+    public TileController getLink() {
+        return this;
     }
 
     @Override

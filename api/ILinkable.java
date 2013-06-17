@@ -5,4 +5,5 @@ import tpw_rules.connectedmachines.tile.TileController;
 
 public interface ILinkable {
     public void setLink(TileController newController);
+    public TileController getLink();
 }

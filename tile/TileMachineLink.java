@@ -9,6 +9,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
+import tpw_rules.connectedmachines.api.ILinkable;
 import tpw_rules.connectedmachines.network.ITileEntityPacketHandler;
 import tpw_rules.connectedmachines.network.InputPacket;
 import tpw_rules.connectedmachines.network.OutputPacket;
@@ -16,13 +17,25 @@ import tpw_rules.connectedmachines.network.PacketType;
 import tpw_rules.connectedmachines.util.Config;
 import tpw_rules.connectedmachines.util.WCoord;
 
-public class TileMachineLink extends TileEntity implements ITileEntityPacketHandler {
+public class TileMachineLink extends TileEntity implements ITileEntityPacketHandler, ILinkable {
     public boolean checkNeighbors; // set when the link needs to check its neighbors for connections
     public boolean[] connectedNeighbors;
+
+    public TileController link;
 
     public TileMachineLink() {
         checkNeighbors = true;
         connectedNeighbors = new boolean[6]; // which neighbors we are connected to
+    }
+
+    @Override
+    public void setLink(TileController link) {
+        this.link = link;
+    }
+
+    @Override
+    public TileController getLink() {
+        return this.link;
     }
 
     @Override
