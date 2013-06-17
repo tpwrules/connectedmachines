@@ -70,5 +70,13 @@ public class WCoord {
         }
         return this;
     }
+
+    public int hashCode() {
+        return world.hashCode() ^ x ^ (y<<8) ^ (z<<16);
+    }
+
+    public boolean equals(WCoord other) {
+        return (world == other.world) && (x == other.x) && (y == other.y) && (z == other.z);
+    }
 }
 
