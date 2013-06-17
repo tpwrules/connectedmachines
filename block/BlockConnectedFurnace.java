@@ -5,6 +5,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLiving;
@@ -19,7 +20,7 @@ import tpw_rules.connectedmachines.render.Texture;
 import tpw_rules.connectedmachines.tile.TileConnectedFurnace;
 import tpw_rules.connectedmachines.util.Util;
 
-public class BlockConnectedFurnace extends BlockContainer {
+public class BlockConnectedFurnace extends BlockContainer implements ITileEntityProvider {
     public BlockConnectedFurnace(int id) {
         super(id, Material.iron);
         setUnlocalizedName("Connected Furnace");
