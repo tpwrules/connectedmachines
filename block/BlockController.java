@@ -49,7 +49,7 @@ public class BlockController extends BlockContainer {
     public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side) {
         TileController tile = (TileController)world.getBlockTileEntity(x, y, z);
         if (ForgeDirection.getOrientation(side) == ForgeDirection.UP) {
-            return Texture.blockSide;
+            return Texture.blockLinked;
         }
         if (ForgeDirection.getOrientation(side) == tile.facing) {
             return Texture.blockController;
