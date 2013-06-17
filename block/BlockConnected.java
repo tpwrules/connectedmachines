@@ -16,6 +16,7 @@ import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.common.ConnectedMachines;
 import tpw_rules.connectedmachines.render.Texture;
 import tpw_rules.connectedmachines.tile.TileConnected;
+import tpw_rules.connectedmachines.util.Util;
 
 
 public class BlockConnected extends BlockContainer {
@@ -33,21 +34,7 @@ public class BlockConnected extends BlockContainer {
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entity, ItemStack item) {
         TileConnected tile = (TileConnected)world.getBlockTileEntity(x, y, z);
-        int facing = MathHelper.floor_double((entity.rotationYaw * 4F) / 360F + 0.5D) & 3;
-        switch (facing) {
-            case 0:
-                tile.facing = ForgeDirection.NORTH;
-                break;
-            case 1:
-                tile.facing = ForgeDirection.EAST;
-                break;
-            case 2:
-                tile.facing = ForgeDirection.SOUTH;
-                break;
-            case 3:
-                tile.facing = ForgeDirection.WEST;
-                break;
-        }
+        tile.facing = Util.getPlayerFacing(entity);
     }
 
     @Override
