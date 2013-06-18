@@ -62,7 +62,7 @@ public class LinkFinder {
         return controller;
     }
 
-    public static ArrayList<ILinkable> findMachines(TileController controller) {
+    public static ArrayList<ILinkable> findMachines(TileController controller, boolean reset) {
         HashSet<WCoord> visited = new HashSet<WCoord>();
         ArrayDeque<WCoord> posStack = new ArrayDeque<WCoord>();
         ArrayDeque<ILinkable> tileStack = new ArrayDeque<ILinkable>();
@@ -104,7 +104,10 @@ public class LinkFinder {
 
         for (WCoord linkee : visited) {
             currentTile = (ILinkable)linkee.getTileEntity();
-            currentTile.setLink(controller, new WCoord(controller));
+            if (!reset)
+                currentTile.setLink(controller, new WCoord(controller));
+            else
+                currentTile.setLink(null, null);
             ret.add(currentTile);
         }
 
