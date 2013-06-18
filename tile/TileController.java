@@ -38,6 +38,11 @@ public class TileController extends TileEntity implements ILinkable {
         return this;
     }
 
+    @Override
+    public void broken() {
+
+    }
+
     public void findMachines() {
         links = LinkFinder.findMachines(this, false);
     }

@@ -40,6 +40,11 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
     }
 
     @Override
+    public void broken() {
+
+    }
+
+    @Override
     public void updateEntity() {
         if (checkNeighbors && FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) { // update neighbors if necessary
             performNeighborCheck();

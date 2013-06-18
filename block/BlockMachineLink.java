@@ -47,6 +47,11 @@ public class BlockMachineLink extends Block implements ITileEntityProvider {
     }
 
     @Override
+    public void breakBlock(World world, int x, int y, int z, int side, int meta) {
+        ((TileMachineLink)world.getBlockTileEntity(x, y, z)).broken();
+    }
+
+    @Override
     public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side) {
         TileMachineLink tile = (TileMachineLink)world.getBlockTileEntity(x, y, z);
         if (tile.link != null) {

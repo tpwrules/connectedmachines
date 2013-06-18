@@ -31,6 +31,11 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable {
     }
 
     @Override
+    public void broken() {
+
+    }
+
+    @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         facing = ForgeDirection.getOrientation(tag.getByte("facing"));

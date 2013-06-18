@@ -7,4 +7,5 @@ import tpw_rules.connectedmachines.util.WCoord;
 public interface ILinkable {
     public void setLink(TileController newController, WCoord controllerCoord);
     public TileController getLink();
+    public void broken();
 }
