@@ -24,7 +24,7 @@ public class TileController extends TileEntity implements ILinkable {
 
     @Override
     public void updateEntity() {
-        if (links == null) {
+        if (links == null && !worldObj.isRemote) {
             findMachines();
         }
     }

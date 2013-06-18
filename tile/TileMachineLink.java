@@ -32,6 +32,9 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
     public void setLink(TileController link, WCoord linkCoord) {
         this.link = link;
         this.linkCoord = linkCoord;
+        OutputPacket packet = new OutputPacket(PacketType.UPDATE_LINK_STATE, 16, this);
+        linkCoord.writeToPacket(packet.data);
+        packet.sendDimension();
     }
 
     @Override
@@ -46,7 +49,7 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
 
     @Override
     public void updateEntity() {
-        if (checkNeighbors && FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) { // update neighbors if necessary
+        if (checkNeighbors && !worldObj.isRemote) { // update neighbors if necessary
             performNeighborCheck();
         } else {
             checkNeighbors = false;
@@ -102,6 +105,12 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
                         throw new RuntimeException(e);
                     }
                 }
+                worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
+                break;
+            case UPDATE_LINK_STATE:
+                linkCoord = WCoord.readFromPacket(packet.data);
+                if (linkCoord.y >= 0)
+                    link = (TileController)linkCoord.getTileEntity();
                 worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
                 break;
         }

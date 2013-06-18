@@ -29,9 +29,9 @@ public class LinkFinder {
             if (visited.contains(current)) {
                 if (posStack.size() == 0)
                     break;
-                current = posStack.getFirst();
-                currentTile = tileStack.getFirst();
-                currentRot = rotStack.getFirst();
+                current = posStack.removeFirst();
+                currentTile = tileStack.removeFirst();
+                currentRot = rotStack.removeFirst();
             } else {
                 visited.add(current);
             }
@@ -74,9 +74,9 @@ public class LinkFinder {
             if (visited.contains(current)) {
                 if (posStack.size() == 0)
                     break;
-                current = posStack.getFirst();
-                currentTile = tileStack.getFirst();
-                currentRot = rotStack.getFirst();
+                current = posStack.removeFirst();
+                currentTile = tileStack.removeFirst();
+                currentRot = rotStack.removeFirst();
             } else {
                 visited.add(current);
             }

@@ -8,9 +8,13 @@ import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.api.ILinkable;
+import tpw_rules.connectedmachines.network.ITileEntityPacketHandler;
+import tpw_rules.connectedmachines.network.InputPacket;
+import tpw_rules.connectedmachines.network.OutputPacket;
+import tpw_rules.connectedmachines.network.PacketType;
 import tpw_rules.connectedmachines.util.WCoord;
 
-public class TileConnectedFurnace extends TileEntity implements ILinkable {
+public class TileConnectedFurnace extends TileEntity implements ILinkable, ITileEntityPacketHandler {
     public ForgeDirection facing;
     public TileController link;
     public WCoord linkCoord;
@@ -23,6 +27,9 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable {
     public void setLink(TileController link, WCoord linkCoord) {
         this.link = link;
         this.linkCoord = linkCoord;
+        OutputPacket packet = new OutputPacket(PacketType.UPDATE_LINK_STATE, 16, this);
+        linkCoord.writeToPacket(packet.data);
+        packet.sendDimension();
     }
 
     @Override
@@ -45,6 +52,18 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable {
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setByte("facing", (byte)facing.ordinal());
+    }
+
+    @Override
+    public void handlePacket(InputPacket packet) {
+        switch (packet.type) {
+            case UPDATE_LINK_STATE:
+                linkCoord = WCoord.readFromPacket(packet.data);
+                if (linkCoord.y >= 0)
+                    link = (TileController)linkCoord.getTileEntity();
+                worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
+                break;
+        }
     }
 
     @Override
