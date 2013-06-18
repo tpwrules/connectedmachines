@@ -9,7 +9,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.api.ILinkable;
 import tpw_rules.connectedmachines.api.LinkFinder;
-import tpw_rules.connectedmachines.util.WCoord;
 
 import java.util.ArrayList;
 
@@ -24,37 +23,18 @@ public class TileController extends TileEntity implements ILinkable {
 
     @Override
     public void updateEntity() {
-        if (links == null && !worldObj.isRemote) {
-            findMachines();
+        if (links == null) {
+            links = LinkFinder.findMachines(this);
         }
     }
 
     @Override
-    public void setLink(TileController link, WCoord linkCoord) {
+    public void setLink(TileController link) {
     }
 
     @Override
     public TileController getLink() {
         return this;
-    }
-
-    @Override
-    public void placed() {
-
-    }
-
-    @Override
-    public void broken() {
-        LinkFinder.findMachines(this, true);
-    }
-
-    public void findMachines() {
-        links = LinkFinder.findMachines(this, false);
-    }
-
-    public void resetNetwork() {
-        LinkFinder.findMachines(this, true);
-        links = null;
     }
 
     @Override

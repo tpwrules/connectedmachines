@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class LinkFinder {
-    public static void updateNetwork(ILinkable tile) {
+    public static TileController findController(ILinkable tile) {
         HashSet<WCoord> visited = new HashSet<WCoord>();
         ArrayDeque<WCoord> posStack = new ArrayDeque<WCoord>();
         ArrayDeque<ILinkable> tileStack = new ArrayDeque<ILinkable>();
@@ -53,12 +53,16 @@ public class LinkFinder {
 
         TileController controller = currentTile.getLink();
         if (controller == null)
-            return;
+            return null;
 
-        controller.findMachines(); // tell controller to find machines again
+        for (WCoord linkee : visited) {
+            ((ILinkable)linkee.getTileEntity()).setLink(controller);
+        }
+
+        return controller;
     }
 
-    public static ArrayList<ILinkable> findMachines(TileController controller, boolean reset) {
+    public static ArrayList<ILinkable> findMachines(TileController controller) {
         HashSet<WCoord> visited = new HashSet<WCoord>();
         ArrayDeque<WCoord> posStack = new ArrayDeque<WCoord>();
         ArrayDeque<ILinkable> tileStack = new ArrayDeque<ILinkable>();
@@ -100,10 +104,7 @@ public class LinkFinder {
 
         for (WCoord linkee : visited) {
             currentTile = (ILinkable)linkee.getTileEntity();
-            if (reset)
-                currentTile.setLink(null, null);
-            else if (currentTile.getLink() != controller)
-                currentTile.setLink(controller, new WCoord(controller));
+            currentTile.setLink(controller);
             ret.add(currentTile);
         }
 
