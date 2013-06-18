@@ -25,7 +25,7 @@ public class TileController extends TileEntity implements ILinkable {
     @Override
     public void updateEntity() {
         if (links == null) {
-            links = LinkFinder.findMachines(this);
+            links = LinkFinder.findMachines(this, false);
         }
     }
 
