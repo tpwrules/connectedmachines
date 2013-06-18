@@ -7,6 +7,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeDirection;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+
 public class WCoord {
     public int x, y, z;
     public World world;
@@ -45,6 +48,25 @@ public class WCoord {
     public void writeToNBT(NBTTagCompound tag, String name) {
         int[] coords = {world.getWorldInfo().getDimension(), x, y, z};
         tag.setIntArray(name, coords);
+    }
+
+    public static WCoord readFromPacket(DataInputStream data) {
+        try {
+            return new WCoord(DimensionManager.getWorld(data.readInt()), data.readInt(), data.readInt(), data.readInt());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void writeToPacket(DataOutputStream data) {
+        try {
+            data.writeInt(world.getWorldInfo().getDimension());
+            data.writeInt(x);
+            data.writeInt(y);
+            data.writeInt(z);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public WCoord move(ForgeDirection dir) {
