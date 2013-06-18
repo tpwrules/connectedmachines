@@ -8,12 +8,24 @@ import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.api.ILinkable;
+import tpw_rules.connectedmachines.api.LinkFinder;
+
+import java.util.ArrayList;
 
 public class TileController extends TileEntity implements ILinkable {
     public ForgeDirection facing;
 
+    public ArrayList<ILinkable> links;
+
     public TileController() {
         facing = ForgeDirection.UP;
+    }
+
+    @Override
+    public void updateEntity() {
+        if (links == null) {
+            links = LinkFinder.findMachines(this);
+        }
     }
 
     @Override

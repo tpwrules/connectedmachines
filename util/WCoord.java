@@ -71,12 +71,35 @@ public class WCoord {
         return this;
     }
 
-    public int hashCode() {
-        return world.hashCode() ^ x ^ (y<<8) ^ (z<<16);
+    public WCoord adjacent(ForgeDirection dir) {
+        switch (dir) {
+            case EAST:
+                return new WCoord(world, x+1, y, z);
+            case WEST:
+                return new WCoord(world, x-1, y, z);
+            case UP:
+                return new WCoord(world, x, y+1, z);
+            case DOWN:
+                return new WCoord(world, x, y-1, z);
+            case SOUTH:
+                return new WCoord(world, x, y, z+1);
+            case NORTH:
+                return new WCoord(world, x, y, z-1);
+        }
+        return null;
     }
 
-    public boolean equals(WCoord other) {
-        return (world == other.world) && (x == other.x) && (y == other.y) && (z == other.z);
+    @Override
+    public int hashCode() {
+        return world.getWorldInfo().getDimension() + x ^ (y << 8) ^ (z << 16);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof WCoord))
+            return false;
+        WCoord coord = (WCoord)other;
+        return (world == coord.world) && (x == coord.x) && (y == coord.y) && (z == coord.z);
     }
 }
 
