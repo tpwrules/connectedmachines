@@ -8,18 +8,21 @@ import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.api.ILinkable;
+import tpw_rules.connectedmachines.util.WCoord;
 
 public class TileConnectedFurnace extends TileEntity implements ILinkable {
     public ForgeDirection facing;
     public TileController link;
+    public WCoord linkCoord;
 
     public TileConnectedFurnace() {
         facing = ForgeDirection.UP;
     }
 
     @Override
-    public void setLink(TileController link) {
+    public void setLink(TileController link, WCoord linkCoord) {
         this.link = link;
+        this.linkCoord = linkCoord;
     }
 
     @Override

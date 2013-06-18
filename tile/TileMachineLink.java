@@ -21,6 +21,7 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
     public boolean[] connectedNeighbors;
 
     public TileController link;
+    public WCoord linkCoord;
 
     public TileMachineLink() {
         checkNeighbors = true;
@@ -28,8 +29,9 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
     }
 
     @Override
-    public void setLink(TileController link) {
+    public void setLink(TileController link, WCoord linkCoord) {
         this.link = link;
+        this.linkCoord = linkCoord;
     }
 
     @Override
