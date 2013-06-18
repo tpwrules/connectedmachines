@@ -104,10 +104,10 @@ public class LinkFinder {
 
         for (WCoord linkee : visited) {
             currentTile = (ILinkable)linkee.getTileEntity();
-            if (!reset)
-                currentTile.setLink(controller, new WCoord(controller));
-            else
+            if (reset)
                 currentTile.setLink(null, null);
+            else if (currentTile.getLink() != controller)
+                currentTile.setLink(controller, new WCoord(controller));
             ret.add(currentTile);
         }
 
