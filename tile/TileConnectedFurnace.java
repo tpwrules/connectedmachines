@@ -8,6 +8,7 @@ import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.api.ILinkable;
+import tpw_rules.connectedmachines.api.LinkFinder;
 import tpw_rules.connectedmachines.network.ITileEntityPacketHandler;
 import tpw_rules.connectedmachines.network.InputPacket;
 import tpw_rules.connectedmachines.network.OutputPacket;
@@ -39,12 +40,13 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
 
     @Override
     public void placed() {
-
+        LinkFinder.updateNetwork(this);
     }
 
     @Override
     public void broken() {
-
+        if (link != null)
+            LinkFinder.findMachines(link, true);
     }
 
     @Override

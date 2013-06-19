@@ -52,6 +52,11 @@ public class TileController extends TileEntity implements ILinkable {
         links = LinkFinder.findMachines(this, false);
     }
 
+    public void resetNetwork() {
+        LinkFinder.findMachines(this, true);
+        findMachines();
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);

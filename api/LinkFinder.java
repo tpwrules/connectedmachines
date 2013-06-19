@@ -107,9 +107,6 @@ public class LinkFinder {
             ret.add(currentTile);
         }
 
-        if (reset)
-            controller.findMachines();
-
         return ret;
     }
 }
