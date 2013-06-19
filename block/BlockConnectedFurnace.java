@@ -39,6 +39,8 @@ public class BlockConnectedFurnace extends BlockContainer implements ITileEntity
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entity, ItemStack item) {
         TileConnectedFurnace tile = (TileConnectedFurnace)world.getBlockTileEntity(x, y, z);
         tile.facing = Util.getPlayerFacing(entity);
+        if (!world.isRemote)
+            tile.placed();
     }
 
     @Override

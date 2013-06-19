@@ -39,7 +39,7 @@ public class BlockMachineLink extends Block implements ITileEntityProvider {
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entity, ItemStack item) {
         if (!world.isRemote)
-            ((TileMachineLink)world.getBlockTileEntity(x, y, z)).performNeighborCheck();
+            ((TileMachineLink)world.getBlockTileEntity(x, y, z)).placed();
     }
 
     @Override

@@ -39,6 +39,11 @@ public class TileController extends TileEntity implements ILinkable {
     }
 
     @Override
+    public void placed() {
+
+    }
+
+    @Override
     public void broken() {
 
     }

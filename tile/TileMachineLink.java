@@ -39,6 +39,11 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
     }
 
     @Override
+    public void placed() {
+        performNeighborCheck();
+    }
+
+    @Override
     public void broken() {
 
     }

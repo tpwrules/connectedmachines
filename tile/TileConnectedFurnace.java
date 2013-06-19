@@ -38,6 +38,11 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
     }
 
     @Override
+    public void placed() {
+
+    }
+
+    @Override
     public void broken() {
 
     }
