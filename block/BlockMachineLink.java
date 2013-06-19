@@ -7,6 +7,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
@@ -35,15 +37,13 @@ public class BlockMachineLink extends Block implements ITileEntityProvider {
     }
 
     @Override
-    public void onPostBlockPlaced(World world, int x, int y, int z, int meta) {
-        // mark that neighbors need to be checked
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entity, ItemStack item) {
         if (!world.isRemote)
             ((TileMachineLink)world.getBlockTileEntity(x, y, z)).performNeighborCheck();
     }
 
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, int neighborID) {
-        // mark that neighbors need to be checked
         if (!world.isRemote)
             ((TileMachineLink)world.getBlockTileEntity(x, y, z)).performNeighborCheck();
     }
