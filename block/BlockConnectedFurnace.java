@@ -44,6 +44,7 @@ public class BlockConnectedFurnace extends BlockContainer implements ITileEntity
     @Override
     public void breakBlock(World world, int x, int y, int z, int side, int meta) {
         ((TileConnectedFurnace)world.getBlockTileEntity(x, y, z)).broken();
+        super.breakBlock(world, x, y, z, side, meta);
     }
 
     @Override
