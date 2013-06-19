@@ -50,7 +50,8 @@ public class BlockMachineLink extends Block implements ITileEntityProvider {
 
     @Override
     public void breakBlock(World world, int x, int y, int z, int side, int meta) {
-        ((TileMachineLink)world.getBlockTileEntity(x, y, z)).broken();
+        if (!world.isRemote)
+            ((TileMachineLink)world.getBlockTileEntity(x, y, z)).broken();
         super.breakBlock(world, x, y, z, side, meta);
     }
 

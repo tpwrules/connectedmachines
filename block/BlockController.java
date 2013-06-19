@@ -41,7 +41,8 @@ public class BlockController extends BlockContainer {
 
     @Override
     public void breakBlock(World world, int x, int y, int z, int side, int meta) {
-        ((TileController)world.getBlockTileEntity(x, y, z)).broken();
+        if (!world.isRemote)
+            ((TileController)world.getBlockTileEntity(x, y, z)).broken();
         super.breakBlock(world, x, y, z, side, meta);
     }
 
