@@ -45,7 +45,7 @@ public class TileController extends TileEntity implements ILinkable {
 
     @Override
     public void broken() {
-
+        LinkFinder.findMachines(this, true);
     }
 
     public void findMachines() {
@@ -54,7 +54,7 @@ public class TileController extends TileEntity implements ILinkable {
 
     public void resetNetwork() {
         LinkFinder.findMachines(this, true);
-        findMachines();
+        links = null;
     }
 
     @Override

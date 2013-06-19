@@ -8,6 +8,7 @@ import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.api.ILinkable;
+import tpw_rules.connectedmachines.api.LinkFinder;
 import tpw_rules.connectedmachines.network.ITileEntityPacketHandler;
 import tpw_rules.connectedmachines.network.InputPacket;
 import tpw_rules.connectedmachines.network.OutputPacket;
@@ -29,7 +30,10 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
         this.link = link;
         this.linkCoord = linkCoord;
         OutputPacket packet = new OutputPacket(PacketType.UPDATE_LINK_STATE, 16, this);
-        linkCoord.writeToPacket(packet.data);
+        if (link == null)
+            new WCoord(this.worldObj, 0, -1, 0).writeToPacket(packet.data);
+        else
+            linkCoord.writeToPacket(packet.data);
         packet.sendDimension();
     }
 
@@ -41,11 +45,13 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
     @Override
     public void placed() {
         performNeighborCheck();
+        LinkFinder.updateNetwork(this);
     }
 
     @Override
     public void broken() {
-
+        if (link != null)
+            link.resetNetwork();
     }
 
     @Override
@@ -106,6 +112,8 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
                 linkCoord = WCoord.readFromPacket(packet.data);
                 if (linkCoord.y >= 0)
                     link = (TileController)linkCoord.getTileEntity();
+                else
+                    link = null;
                 worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
                 break;
         }
