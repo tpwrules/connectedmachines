@@ -15,14 +15,12 @@ import tpw_rules.connectedmachines.network.PacketType;
 import tpw_rules.connectedmachines.util.WCoord;
 
 public class TileMachineLink extends TileEntity implements ITileEntityPacketHandler, ILinkable {
-    public boolean checkNeighbors; // set when the link needs to check its neighbors for connections
     public boolean[] connectedNeighbors;
 
     public TileController link;
     public WCoord linkCoord;
 
     public TileMachineLink() {
-        checkNeighbors = true;
         connectedNeighbors = new boolean[6]; // which neighbors we are connected to
     }
 
@@ -47,8 +45,6 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
 
     @Override
     public void updateEntity() {
-        if (checkNeighbors) // update neighbors if necessary
-            performNeighborCheck();
     }
 
     public void performNeighborCheck() {
@@ -65,7 +61,6 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
             }
         }
         packet.sendDimension(); // send the packet off to the client
-        checkNeighbors = false; // we don't need to check neighbors anymore
     }
 
     @Override
