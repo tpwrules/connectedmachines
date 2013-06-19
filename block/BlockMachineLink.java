@@ -37,13 +37,15 @@ public class BlockMachineLink extends Block implements ITileEntityProvider {
     @Override
     public void onPostBlockPlaced(World world, int x, int y, int z, int meta) {
         // mark that neighbors need to be checked
-        ((TileMachineLink)world.getBlockTileEntity(x, y, z)).checkNeighbors = true;
+        if (!world.isRemote)
+            ((TileMachineLink)world.getBlockTileEntity(x, y, z)).checkNeighbors = true;
     }
 
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, int neighborID) {
         // mark that neighbors need to be checked
-        ((TileMachineLink)world.getBlockTileEntity(x, y, z)).checkNeighbors = true;
+        if (!world.isRemote)
+            ((TileMachineLink)world.getBlockTileEntity(x, y, z)).checkNeighbors = true;
     }
 
     @Override

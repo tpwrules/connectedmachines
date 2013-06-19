@@ -1,8 +1,6 @@
 package tpw_rules.connectedmachines.tile;
 
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
@@ -49,11 +47,8 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
 
     @Override
     public void updateEntity() {
-        if (checkNeighbors && !worldObj.isRemote) { // update neighbors if necessary
+        if (checkNeighbors) // update neighbors if necessary
             performNeighborCheck();
-        } else {
-            checkNeighbors = false;
-        }
     }
 
     public void performNeighborCheck() {
