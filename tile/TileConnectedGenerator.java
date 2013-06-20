@@ -153,11 +153,11 @@ public class TileConnectedGenerator extends TileEntity implements ILinkable, ITi
 
     @Override
     public int getPower(int request_) {
-        int request = (request_/20)+1;
+        int request = (request_/10)+1;
         int output = powerBuffer;
         if (output >= request) {
             powerBuffer = output-request;
-            return output*20;
+            return output*10;
         }
         int remaining = request-output;
         for (int slot = 0; slot < getSizeInventory(); slot++) {
@@ -178,7 +178,7 @@ public class TileConnectedGenerator extends TileEntity implements ILinkable, ITi
             powerBuffer = output-request;
         else
             powerBuffer = 0;
-        return output*20;
+        return output*10;
     }
 
     @Override
