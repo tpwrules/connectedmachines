@@ -9,7 +9,6 @@ import net.minecraft.util.StatCollector;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import tpw_rules.connectedmachines.tile.TileInputOutput;
-import tpw_rules.connectedmachines.util.Util;
 
 public class GuiInputOutput extends GuiContainer {
     private GuiTextField ioName;
@@ -38,6 +37,7 @@ public class GuiInputOutput extends GuiContainer {
         ((GuiButton)buttonList.get(0)).enabled = true;
         guiLeft = (width-xSize)/2;
         guiTop = (height-ySize)/2;
+        super.initGui();
     }
 
     @Override
@@ -48,7 +48,6 @@ public class GuiInputOutput extends GuiContainer {
     @Override
     protected void actionPerformed(GuiButton button) {
         if (!button.enabled) return;
-        Util.log("hi");
     }
 
     @Override
