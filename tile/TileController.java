@@ -18,11 +18,13 @@ import tpw_rules.connectedmachines.network.PacketType;
 import tpw_rules.connectedmachines.util.WCoord;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class TileController extends TileEntity implements ILinkable, IPowerConsumer, ITileEntityPacketHandler {
     public ForgeDirection facing;
 
     public ArrayList<ILinkable> links;
+    public HashMap<String, TileInputOutput> ioPorts;
 
     public int powerBuffer;
     public int powerBufferMax;
@@ -31,6 +33,7 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
 
     public TileController() {
         facing = ForgeDirection.UP;
+        ioPorts = new HashMap<String, TileInputOutput>();
     }
 
     @Override
@@ -86,10 +89,19 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
         links = LinkFinder.findMachines(this, false);
         if (links == null) return;
         powerBufferMax = 0;
+        ioPorts.clear();
         for (ILinkable machine : links) {
             if (machine instanceof IPowerConsumer)
                 powerBufferMax += ((IPowerConsumer)machine).getBufferSize();
+            else if (machine instanceof TileInputOutput)
+                ioPorts.put(((TileInputOutput)machine).name, (TileInputOutput)machine);
         }
+    }
+
+    public void changeIOName(TileInputOutput tile, String next) {
+        ioPorts.remove(tile.name);
+        ioPorts.put(next, tile);
+        tile.name = next;
     }
 
     public void resetNetwork() {

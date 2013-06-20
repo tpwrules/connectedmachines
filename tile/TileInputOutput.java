@@ -25,6 +25,8 @@ public class TileInputOutput extends TileEntity implements ILinkable, ITileEntit
     public TileController link;
     public WCoord linkCoord;
 
+    public String name;
+
     private ItemStack[] inv;
 
     public TileInputOutput() {
