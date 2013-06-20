@@ -58,40 +58,51 @@ public class LinkFinder {
     }
 
     public static ArrayList<ILinkable> findMachines(TileController controller, boolean reset) {
+        // note: method above is basically the same
+
+        // record what we have seen
         HashSet<WCoord> visited = new HashSet<WCoord>();
+
+        // stacks for backtracking
         ArrayDeque<WCoord> posStack = new ArrayDeque<WCoord>();
         ArrayDeque<ILinkable> tileStack = new ArrayDeque<ILinkable>();
         ArrayDeque<Integer> rotStack = new ArrayDeque<Integer>();
 
-        WCoord current = new WCoord(controller);
+        WCoord current = new WCoord(controller); // current information
         ILinkable currentTile = controller;
         TileEntity nextTile;
         WCoord nextPos;
         int currentRot = 0;
 
         while (true) {
-            if (visited.contains(current)) {
+            if (visited.contains(current)) { // have we seen this tile before
+                // yes, let's backtrack
                 if (posStack.size() == 0)
-                    break;
+                    break; // we're done if the stack is empty
+                // otherwise, pop a tile and continue examining it
                 current = posStack.removeFirst();
                 currentTile = tileStack.removeFirst();
                 currentRot = rotStack.removeFirst();
             } else {
-                visited.add(current);
+                visited.add(current); // no, well we have now!
             }
-            while (currentRot < 6) {
+            while (currentRot < 6) { // loop through the 6 faces of this tile
+                // get the adjacent tile
                 nextPos = current.adjacent(ForgeDirection.getOrientation(currentRot));
                 nextTile = nextPos.getTileEntity();
                 currentRot++;
                 if (!(nextTile instanceof ILinkable))
-                    continue;
+                    continue; // ignore if it's not something we can connect to
+                // if it is, we want to examine it further
+                // so save current block on the stack
                 posStack.addFirst(current);
                 tileStack.addFirst(currentTile);
                 rotStack.addFirst(currentRot);
+                // update next values
                 current = nextPos;
                 currentTile = (ILinkable)nextTile;
                 currentRot = 0;
-                break;
+                break; // and stop examining this tile for now
             }
         }
 
