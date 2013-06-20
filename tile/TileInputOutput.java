@@ -18,6 +18,7 @@ import tpw_rules.connectedmachines.network.InputPacket;
 import tpw_rules.connectedmachines.network.OutputPacket;
 import tpw_rules.connectedmachines.network.PacketType;
 import tpw_rules.connectedmachines.util.InventoryUtil;
+import tpw_rules.connectedmachines.util.Util;
 import tpw_rules.connectedmachines.util.WCoord;
 
 public class TileInputOutput extends TileEntity implements ILinkable, ITileEntityPacketHandler, IInventory, IPowerConsumer {
@@ -31,7 +32,6 @@ public class TileInputOutput extends TileEntity implements ILinkable, ITileEntit
 
     public TileInputOutput() {
         facing = ForgeDirection.UP;
-        linkCoord = new WCoord(this.worldObj, 0, -1, 0);
         inv = new ItemStack[9];
         name = "Default";
     }
@@ -147,7 +147,7 @@ public class TileInputOutput extends TileEntity implements ILinkable, ITileEntit
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        tag.setByte("facing", (byte)facing.ordinal());
+        tag.setByte("facing", (byte) facing.ordinal());
         tag.setTag("inventory", InventoryUtil.writeInventory(inv));
         tag.setString("name", name);
     }
@@ -196,8 +196,9 @@ public class TileInputOutput extends TileEntity implements ILinkable, ITileEntit
     {
         NBTTagCompound tag = new NBTTagCompound();
         this.writeToNBT(tag);
-        if (linkCoord == null)
+        if (linkCoord == null) {
             linkCoord = new WCoord(this.worldObj, 0, -1, 0);
+        }
         linkCoord.writeToNBT(tag, "link");
         return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, tag);
     }
