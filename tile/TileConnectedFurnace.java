@@ -8,6 +8,7 @@ import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.api.ILinkable;
+import tpw_rules.connectedmachines.api.IPowerConsumer;
 import tpw_rules.connectedmachines.api.LinkFinder;
 import tpw_rules.connectedmachines.network.ITileEntityPacketHandler;
 import tpw_rules.connectedmachines.network.InputPacket;
@@ -15,7 +16,7 @@ import tpw_rules.connectedmachines.network.OutputPacket;
 import tpw_rules.connectedmachines.network.PacketType;
 import tpw_rules.connectedmachines.util.WCoord;
 
-public class TileConnectedFurnace extends TileEntity implements ILinkable, ITileEntityPacketHandler {
+public class TileConnectedFurnace extends TileEntity implements ILinkable, ITileEntityPacketHandler, IPowerConsumer {
     public ForgeDirection facing;
     public TileController link;
     public WCoord linkCoord;
@@ -37,6 +38,12 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
     }
 
     @Override
+    public void updateEntity() {
+        if (link == null) return;
+        link.consumePower(1);
+    }
+
+    @Override
     public TileController getLink() {
         return this.link;
     }
@@ -50,6 +57,11 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
     public void broken() {
         if (link != null)
             link.resetNetwork();
+    }
+
+    @Override
+    public int getBufferSize() {
+        return 100;
     }
 
     @Override
