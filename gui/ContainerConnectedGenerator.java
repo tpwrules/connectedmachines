@@ -6,6 +6,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityFurnace;
 import tpw_rules.connectedmachines.tile.TileConnectedFurnace;
 import tpw_rules.connectedmachines.tile.TileConnectedGenerator;
 
@@ -22,7 +23,7 @@ public class ContainerConnectedGenerator extends Container {
         {
             for (j = 0; j < 3; ++j)
             {
-                this.addSlotToContainer(new Slot(te, j + i * 3, 62 + j * 18, 17 + i * 18));
+                this.addSlotToContainer(new SlotFuel(te, j + i * 3, 62 + j * 18, 17 + i * 18));
             }
         }
 
@@ -57,8 +58,9 @@ public class ContainerConnectedGenerator extends Container {
         if (slot < 9) {
             if (!this.mergeItemStack(slotStack, 9, 45, true))
                 return null;
-        } else if (!this.mergeItemStack(slotStack, 0, 9, false)) {// merge with TE if source is player
-            return null;
+        } else if (TileEntityFurnace.isItemFuel(slotStack)) {
+            if (!this.mergeItemStack(slotStack, 0, 9, false)) // merge with TE if source is player
+                return null;
         }
 
         if (slotStack.stackSize == 0)
