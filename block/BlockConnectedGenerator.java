@@ -17,6 +17,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.common.ConnectedMachines;
+import tpw_rules.connectedmachines.gui.GuiType;
 import tpw_rules.connectedmachines.render.Texture;
 import tpw_rules.connectedmachines.tile.TileConnectedGenerator;
 import tpw_rules.connectedmachines.util.InventoryUtil;
@@ -50,7 +51,7 @@ public class BlockConnectedGenerator extends BlockContainer implements ITileEnti
                                     int meta, float hitX, float hitY, float hitZ) {
         if (player.isSneaking())
             return false;
-        player.openGui(ConnectedMachines.instance, 0, world, x, y, z);
+        player.openGui(ConnectedMachines.instance, GuiType.GUI_CONNECTED_GENERATOR.ordinal(), world, x, y, z);
         return true;
     }
 

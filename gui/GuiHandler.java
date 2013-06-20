@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import tpw_rules.connectedmachines.tile.TileConnectedGenerator;
+import tpw_rules.connectedmachines.tile.TileController;
 
 public class GuiHandler implements IGuiHandler {
     @Override
@@ -15,6 +16,8 @@ public class GuiHandler implements IGuiHandler {
         switch (GuiType.values[id]) {
             case GUI_CONNECTED_GENERATOR:
                 return new ContainerConnectedGenerator(player.inventory, (TileConnectedGenerator)tileEntity);
+            case GUI_CONTROLLER:
+                return new ContainerController((TileController)tileEntity);
         }
         return null;
     }
@@ -26,6 +29,8 @@ public class GuiHandler implements IGuiHandler {
         switch (GuiType.values[id]) {
             case GUI_CONNECTED_GENERATOR:
                 return new GuiConnectedGenerator(player.inventory, (TileConnectedGenerator)tileEntity);
+            case GUI_CONTROLLER:
+                return new GuiController((TileController)tileEntity);
         }
         return null;
     }

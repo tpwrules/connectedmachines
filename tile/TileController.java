@@ -40,6 +40,7 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
                     powerBuffer += ((IPowerProvider)machine).getPower(powerBufferMax-powerBuffer);
             }
         }
+        consumePower(5);
     }
 
     @Override
@@ -79,6 +80,13 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
     @Override
     public int getBufferSize() {
         return 100;
+    }
+
+    public boolean consumePower(int amount) {
+        if (powerBuffer < amount)
+            return false;
+        powerBuffer -= amount;
+        return true;
     }
 
     @Override
