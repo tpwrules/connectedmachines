@@ -11,7 +11,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class LinkFinder {
+<<<<<<< HEAD
     public static TileController findController(ILinkable tile) {
+=======
+    public static void updateNetwork(ILinkable tile) {
+>>>>>>> 85c4699f419471c45a4a2943c61ecb98b96b494a
         HashSet<WCoord> visited = new HashSet<WCoord>();
         ArrayDeque<WCoord> posStack = new ArrayDeque<WCoord>();
         ArrayDeque<ILinkable> tileStack = new ArrayDeque<ILinkable>();
@@ -53,6 +57,7 @@ public class LinkFinder {
 
         TileController controller = currentTile.getLink();
         if (controller == null)
+<<<<<<< HEAD
             return null;
 
         for (WCoord linkee : visited) {
@@ -63,6 +68,14 @@ public class LinkFinder {
     }
 
     public static ArrayList<ILinkable> findMachines(TileController controller) {
+=======
+            return;
+
+        controller.findMachines(); // tell controller to find machines again
+    }
+
+    public static ArrayList<ILinkable> findMachines(TileController controller, boolean reset) {
+>>>>>>> 85c4699f419471c45a4a2943c61ecb98b96b494a
         HashSet<WCoord> visited = new HashSet<WCoord>();
         ArrayDeque<WCoord> posStack = new ArrayDeque<WCoord>();
         ArrayDeque<ILinkable> tileStack = new ArrayDeque<ILinkable>();
@@ -104,7 +117,14 @@ public class LinkFinder {
 
         for (WCoord linkee : visited) {
             currentTile = (ILinkable)linkee.getTileEntity();
+<<<<<<< HEAD
             currentTile.setLink(controller, new WCoord(controller));
+=======
+            if (reset)
+                currentTile.setLink(null, null);
+            else if (currentTile.getLink() != controller)
+                currentTile.setLink(controller, new WCoord(controller));
+>>>>>>> 85c4699f419471c45a4a2943c61ecb98b96b494a
             ret.add(currentTile);
         }
 
