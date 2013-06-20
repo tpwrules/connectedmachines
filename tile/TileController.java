@@ -177,9 +177,9 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
         NBTTagList groupList = new NBTTagList();
         for (Map.Entry<String, String[]> entry : groups.entrySet()) {
             NBTTagList oneGroup = new NBTTagList();
-            oneGroup.appendTag(new NBTTagString(entry.getKey()));
-            oneGroup.appendTag(new NBTTagString(entry.getValue()[0]));
-            oneGroup.appendTag(new NBTTagString(entry.getValue()[1]));
+            oneGroup.appendTag(new NBTTagString("harp", entry.getKey()));
+            oneGroup.appendTag(new NBTTagString("darp", entry.getValue()[0]));
+            oneGroup.appendTag(new NBTTagString("larp", entry.getValue()[1]));
             groupList.appendTag(oneGroup);
         }
         tag.setTag("groups", groupList);
