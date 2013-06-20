@@ -18,6 +18,8 @@ public class GuiController extends GuiContainer {
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         fontRenderer.drawString("Controller", 8, 6, 0x404040);
+        fontRenderer.drawString("Power: "+controller.powerBuffer+"/"+controller.powerBufferMax,
+                16, 16, 0x404040);
     }
 
     @Override

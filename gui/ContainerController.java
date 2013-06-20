@@ -14,6 +14,13 @@ public class ContainerController extends Container {
     }
 
     @Override
+    public void detectAndSendChanges() {
+        super.detectAndSendChanges();
+        controller.sendGuiUpdate();
+
+    }
+
+    @Override
     public void putStackInSlot(int slot, ItemStack stack) {
         return;
     }

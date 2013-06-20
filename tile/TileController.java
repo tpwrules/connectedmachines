@@ -11,17 +11,23 @@ import tpw_rules.connectedmachines.api.ILinkable;
 import tpw_rules.connectedmachines.api.IPowerConsumer;
 import tpw_rules.connectedmachines.api.IPowerProvider;
 import tpw_rules.connectedmachines.api.LinkFinder;
+import tpw_rules.connectedmachines.network.ITileEntityPacketHandler;
+import tpw_rules.connectedmachines.network.InputPacket;
+import tpw_rules.connectedmachines.network.OutputPacket;
+import tpw_rules.connectedmachines.network.PacketType;
 import tpw_rules.connectedmachines.util.WCoord;
 
 import java.util.ArrayList;
 
-public class TileController extends TileEntity implements ILinkable, IPowerConsumer {
+public class TileController extends TileEntity implements ILinkable, IPowerConsumer, ITileEntityPacketHandler {
     public ForgeDirection facing;
 
     public ArrayList<ILinkable> links;
 
-    private int powerBuffer;
-    private int powerBufferMax;
+    public int powerBuffer;
+    public int powerBufferMax;
+
+    private boolean guiUpdateNecessary;
 
     public TileController() {
         facing = ForgeDirection.UP;
@@ -41,6 +47,7 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
             }
         }
         consumePower(5);
+        guiUpdateNecessary = true;
     }
 
     @Override
@@ -60,6 +67,19 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
     @Override
     public void broken() {
         LinkFinder.findMachines(this, true);
+    }
+
+    public void sendGuiUpdate() {
+        if (!guiUpdateNecessary) return;
+        guiUpdateNecessary = false;
+        OutputPacket packet = new OutputPacket(PacketType.GUI_UPDATE, 8, this);
+        try {
+            packet.data.writeInt(powerBuffer);
+            packet.data.writeInt(powerBufferMax);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        packet.sendDimension();
     }
 
     public void findMachines() {
@@ -99,6 +119,20 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setByte("facing", (byte)facing.ordinal());
+    }
+
+    @Override
+    public void handlePacket(InputPacket packet) {
+        switch (packet.type) {
+            case GUI_UPDATE:
+                try {
+                    powerBuffer = packet.data.readInt();
+                    powerBufferMax = packet.data.readInt();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                break;
+        }
     }
 
     @Override
