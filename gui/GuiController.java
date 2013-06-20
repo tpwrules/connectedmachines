@@ -39,8 +39,8 @@ public class GuiController extends GuiContainer {
         buttonList.add(new GuiButton(3, 154+guiLeft, 48+guiTop, 10, 20, ">"));
         buttonList.add(new GuiButton(4, 20+guiLeft, 70+guiTop, 10, 20, "<"));
         buttonList.add(new GuiButton(5, 154+guiLeft, 70+guiTop, 10, 20, ">"));
-        buttonList.add(new GuiButton(6, 90+guiLeft, 4+guiTop, 40, 20, "Set"));
-        buttonList.add(new GuiButton(7, 132+guiLeft, 4+guiTop, 40, 20, "New"));
+        buttonList.add(new GuiButton(6, 114+guiLeft, 4+guiTop, 28, 20, "Set"));
+        buttonList.add(new GuiButton(7, 144+guiLeft, 4+guiTop, 28, 20, "New"));
         groupName = new GuiTextField(this.fontRenderer, 32, 26, 120, 20);
         inputName = new GuiTextField(this.fontRenderer, 32, 48, 120, 20);
         outputName = new GuiTextField(this.fontRenderer, 32, 70, 120, 20);
@@ -73,7 +73,7 @@ public class GuiController extends GuiContainer {
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         fontRenderer.drawString("Controller", 8, 6, 0x404040);
         fontRenderer.drawString("Power: "+controller.powerBuffer+"/"+controller.powerBufferMax,
-                16, 16, 0x404040);
+                8, 16, 0x404040);
         fontRenderer.drawString("G:", 8, 32, 0x404040);
         fontRenderer.drawString("I:", 8, 54, 0x404040);
         fontRenderer.drawString("O:", 8, 76, 0x404040);
