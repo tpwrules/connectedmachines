@@ -7,7 +7,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
-import tpw_rules.connectedmachines.tile.TileConnectedFurnace;
 import tpw_rules.connectedmachines.tile.TileConnectedGenerator;
 
 public class ContainerConnectedGenerator extends Container {
