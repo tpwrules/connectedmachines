@@ -36,7 +36,7 @@ public class LinkFinder {
                 visited.add(current);
             }
             while (currentRot < 6) {
-                nextPos = current.copy().move(ForgeDirection.getOrientation(currentRot));
+                nextPos = current.adjacent(ForgeDirection.getOrientation(currentRot));
                 nextTile = nextPos.getTileEntity();
                 currentRot++;
                 if (!(nextTile instanceof ILinkable))
