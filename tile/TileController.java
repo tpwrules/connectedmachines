@@ -28,6 +28,7 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
     public ForgeDirection facing;
 
     public ArrayList<ILinkable> links;
+
     public HashMap<String, TileInputOutput> ioPorts;
     public ArrayList<String> ioPortList;
 
@@ -102,11 +103,10 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
         powerBufferMax = 0;
         ioPorts.clear();
         for (ILinkable machine : links) {
-            if (machine instanceof IPowerConsumer)
-                powerBufferMax += ((IPowerConsumer)machine).getBufferSize();
-            else if (machine instanceof TileInputOutput) {
+            if (machine instanceof TileInputOutput)
                 ioPorts.put(((TileInputOutput)machine).name, (TileInputOutput)machine);
-            }
+            else if (machine instanceof IPowerConsumer)
+                powerBufferMax += ((IPowerConsumer)machine).getBufferSize();
         }
         OutputPacket packet = new OutputPacket(PacketType.NAME_UPDATE, 64, this);
         try {
@@ -214,6 +214,11 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
     @Override
     public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
         this.readFromNBT(packet.customParam1);
+        ioPortList.clear();
+        NBTTagList nameList = packet.customParam1.getTagList("names");
+        for (int i = 0; i < nameList.tagCount(); i++) {
+            ioPortList.add(nameList.tagAt(i).toString());
+        }
     }
 
     @Override
@@ -221,6 +226,11 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
     {
         NBTTagCompound tag = new NBTTagCompound();
         this.writeToNBT(tag);
+        NBTTagList nameList = new NBTTagList();
+        for (String name : ioPorts.keySet()) {
+            nameList.appendTag(new NBTTagString("farp", name));
+        }
+        tag.setTag("names", nameList);
         return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, tag);
     }
 }
