@@ -23,6 +23,7 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
 
     public TileMachineLink() {
         connectedNeighbors = new boolean[6]; // which neighbors we are connected to
+        linkCoord = new WCoord(this.worldObj, 0, -1, 0);
     }
 
     public void setLink(TileController link, WCoord linkCoord) {
@@ -121,6 +122,11 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
     @Override
     public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
         this.readFromNBT(packet.customParam1);
+        linkCoord = WCoord.readFromNBT(packet.customParam1, "link");
+        if (linkCoord.y >= 0) {
+            link = (TileController)linkCoord.getTileEntity();
+            worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
+        }
     }
 
     @Override
@@ -128,6 +134,7 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
     {
         NBTTagCompound tag = new NBTTagCompound();
         this.writeToNBT(tag);
+        linkCoord.writeToNBT(tag, "link");
         return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, tag);
     }
 }

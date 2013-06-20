@@ -81,6 +81,11 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
     @Override
     public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
         this.readFromNBT(packet.customParam1);
+        linkCoord = WCoord.readFromNBT(packet.customParam1, "link");
+        if (linkCoord.y >= 0) {
+            link = (TileController)linkCoord.getTileEntity();
+            worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
+        }
     }
 
     @Override
@@ -88,6 +93,7 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
     {
         NBTTagCompound tag = new NBTTagCompound();
         this.writeToNBT(tag);
+        linkCoord.writeToNBT(tag, "link");
         return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, tag);
     }
 }

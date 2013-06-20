@@ -32,7 +32,7 @@ public class TileConnectedGenerator extends TileEntity implements ILinkable, ITi
 
     public TileConnectedGenerator() {
         facing = ForgeDirection.UP;
-
+        linkCoord = new WCoord(this.worldObj, 0, -1, 0);
         inv = new ItemStack[9];
         powerBuffer = 0;
     }
@@ -140,7 +140,6 @@ public class TileConnectedGenerator extends TileEntity implements ILinkable, ITi
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         facing = ForgeDirection.getOrientation(tag.getByte("facing"));
-
         if (tag.hasKey("inventory"))
             inv = InventoryUtil.readInventory(tag.getTagList("inventory"));
     }
@@ -198,6 +197,11 @@ public class TileConnectedGenerator extends TileEntity implements ILinkable, ITi
     @Override
     public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
         this.readFromNBT(packet.customParam1);
+        linkCoord = WCoord.readFromNBT(packet.customParam1, "link");
+        if (linkCoord.y >= 0) {
+            link = (TileController)linkCoord.getTileEntity();
+            worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
+        }
     }
 
     @Override
@@ -205,6 +209,7 @@ public class TileConnectedGenerator extends TileEntity implements ILinkable, ITi
     {
         NBTTagCompound tag = new NBTTagCompound();
         this.writeToNBT(tag);
+        linkCoord.writeToNBT(tag, "link");
         return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, tag);
     }
 }
