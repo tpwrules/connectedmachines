@@ -6,7 +6,9 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import tpw_rules.connectedmachines.block.*;
+import tpw_rules.connectedmachines.gui.GuiHandler;
 import tpw_rules.connectedmachines.network.PacketHandler;
 import tpw_rules.connectedmachines.util.Config;
 
@@ -41,6 +43,8 @@ public class ConnectedMachines {
         blockMachineLink = new BlockMachineLink(Config.blockMachineLinkID);
         blockConnectedFurnace = new BlockConnectedFurnace(Config.blockConnectedFurnaceID);
         blockConnectedGenerator = new BlockConnectedGenerator(Config.blockConnectedGeneratorID);
+
+        NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
 
         proxy.registerRenderers();
     }
