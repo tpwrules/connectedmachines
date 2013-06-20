@@ -38,7 +38,7 @@ public class GuiInputOutput extends GuiContainer {
         ioName.setCanLoseFocus(true);
         ioName.setText(tile.name);
         ioName.setMaxStringLength(128);
-        ((GuiButton)buttonList.get(0)).enabled = (tile.name != ioName.getText());
+        ((GuiButton)buttonList.get(0)).enabled = (tile.name.equals(ioName.getText()));
         guiLeft = (width-xSize)/2;
         guiTop = (height-ySize)/2;
         super.initGui();
@@ -65,7 +65,7 @@ public class GuiInputOutput extends GuiContainer {
     @Override
     protected void keyTyped(char par1, int par2) {
         ioName.textboxKeyTyped(par1, par2);
-        ((GuiButton)buttonList.get(0)).enabled = (tile.name != ioName.getText());
+        ((GuiButton)buttonList.get(0)).enabled = (tile.name.equals(ioName.getText()));
         if (par2 == 1) // escape
             super.keyTyped(par1, par2);
     }
