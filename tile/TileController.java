@@ -113,12 +113,14 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         facing = ForgeDirection.getOrientation(tag.getByte("facing"));
+        powerBuffer = tag.getInteger("power");
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setByte("facing", (byte)facing.ordinal());
+        tag.setInteger("power", powerBuffer);
     }
 
     @Override
