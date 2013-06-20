@@ -22,21 +22,13 @@ public class TileController extends TileEntity implements ILinkable {
     private int powerBuffer;
     private int powerBufferMax;
 
-    private boolean started;
-
     public TileController() {
         facing = ForgeDirection.UP;
-        started = false;
     }
 
     @Override
     public void updateEntity() {
         if (worldObj.isRemote) return;
-        if (!started) {
-            resetNetwork();
-            findMachines();
-            started = true;
-        }
         if (links == null)
             findMachines();
     }
