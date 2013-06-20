@@ -9,12 +9,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.api.ILinkable;
 import tpw_rules.connectedmachines.api.IPowerConsumer;
+import tpw_rules.connectedmachines.api.IPowerProvider;
 import tpw_rules.connectedmachines.api.LinkFinder;
 import tpw_rules.connectedmachines.util.WCoord;
 
 import java.util.ArrayList;
 
-public class TileController extends TileEntity implements ILinkable {
+public class TileController extends TileEntity implements ILinkable, IPowerConsumer {
     public ForgeDirection facing;
 
     public ArrayList<ILinkable> links;
@@ -31,6 +32,14 @@ public class TileController extends TileEntity implements ILinkable {
         if (worldObj.isRemote) return;
         if (links == null)
             findMachines();
+        if (links == null)
+            return;
+        for (ILinkable machine : links) {
+            if (machine instanceof IPowerProvider) {
+                if (powerBuffer < powerBufferMax)
+                    powerBuffer += ((IPowerProvider)machine).getPower(powerBufferMax-powerBuffer);
+            }
+        }
     }
 
     @Override
@@ -54,11 +63,22 @@ public class TileController extends TileEntity implements ILinkable {
 
     public void findMachines() {
         links = LinkFinder.findMachines(this, false);
+        if (links == null) return;
+        powerBufferMax = 0;
+        for (ILinkable machine : links) {
+            if (machine instanceof IPowerConsumer)
+                powerBufferMax += ((IPowerConsumer)machine).getBufferSize();
+        }
     }
 
     public void resetNetwork() {
         LinkFinder.findMachines(this, true);
         links = null;
+    }
+
+    @Override
+    public int getBufferSize() {
+        return 100;
     }
 
     @Override
