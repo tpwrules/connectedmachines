@@ -1,21 +1,77 @@
 package tpw_rules.connectedmachines.gui;
 
 
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import tpw_rules.connectedmachines.tile.TileInputOutput;
+import tpw_rules.connectedmachines.util.Util;
 
 public class GuiInputOutput extends GuiContainer {
+    private GuiTextField ioName;
+
     public GuiInputOutput(InventoryPlayer inventoryPlayer, TileInputOutput inputOutput) {
         super(new ContainerInputOutput(inventoryPlayer, inputOutput));
+        ySize = 196;
     }
+
+    @Override
+    public void updateScreen() {
+        ioName.updateCursorCounter();
+        super.updateScreen();
+    }
+
+    @Override
+    public void initGui() {
+        Keyboard.enableRepeatEvents(false);
+        buttonList.clear();
+        buttonList.add(new GuiButton(0, 130+(width-xSize)/2, 80+(height-ySize)/2, 40, 20, "Set"));
+        ioName = new GuiTextField(this.fontRenderer, 8, 80, 115, 20);
+        ioName.setFocused(true);
+        ioName.setCanLoseFocus(true);
+        ioName.setText("Default");
+        ioName.setMaxStringLength(128);
+        ((GuiButton)buttonList.get(0)).enabled = true;
+        guiLeft = (width-xSize)/2;
+        guiTop = (height-ySize)/2;
+    }
+
+    @Override
+    public void onGuiClosed() {
+        Keyboard.enableRepeatEvents(true);
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton button) {
+        if (!button.enabled) return;
+        Util.log("hi");
+    }
+
+    @Override
+    protected void keyTyped(char par1, int par2) {
+        ioName.textboxKeyTyped(par1, par2);
+        if (par2 == 1) // escape
+            super.keyTyped(par1, par2);
+    }
+
+    @Override
+    protected void mouseClicked(int x, int y, int button) {
+        super.mouseClicked(x, y, button);
+        ioName.mouseClicked(x-guiLeft, y-guiTop, button);
+    }
+
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         fontRenderer.drawString("Input/Output", 8, 6, 0x404040);
         fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"),
                 8, ySize-94, 0x404040);
+        fontRenderer.drawString("Name", 8, 69, 0x404040);
+        this.ioName.drawTextBox();
+        super.drawGuiContainerForegroundLayer(par1, par2);
     }
 
     @Override
