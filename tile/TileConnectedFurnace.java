@@ -56,14 +56,12 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         facing = ForgeDirection.getOrientation(tag.getByte("facing"));
-        linkCoord = WCoord.readFromNBT(tag, "linkPos");
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setByte("facing", (byte)facing.ordinal());
-        linkCoord.writeToNBT(tag, "linkPos");
     }
 
     @Override

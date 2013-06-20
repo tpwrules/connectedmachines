@@ -46,14 +46,12 @@ public class TileConnectedGenerator extends TileEntity implements ILinkable {
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         facing = ForgeDirection.getOrientation(tag.getByte("facing"));
-        linkPos = WCoord.readFromNBT(tag, "linkPos");
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setByte("facing", (byte)facing.ordinal());
-        linkPos.writeToNBT(tag, "linkPos");
     }
 
     @Override
