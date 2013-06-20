@@ -23,7 +23,6 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
 
     public TileConnectedFurnace() {
         facing = ForgeDirection.UP;
-        linkCoord = new WCoord(this.worldObj, 0, -1, 0);
     }
 
     @Override
@@ -106,6 +105,8 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
     {
         NBTTagCompound tag = new NBTTagCompound();
         this.writeToNBT(tag);
+        if (linkCoord == null)
+            linkCoord = new WCoord(this.worldObj, 0, -1, 0);
         linkCoord.writeToNBT(tag, "link");
         return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, tag);
     }
