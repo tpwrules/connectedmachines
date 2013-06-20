@@ -33,6 +33,7 @@ public class TileInputOutput extends TileEntity implements ILinkable, ITileEntit
         facing = ForgeDirection.UP;
         linkCoord = new WCoord(this.worldObj, 0, -1, 0);
         inv = new ItemStack[9];
+        name = "Default";
     }
 
     @Override
@@ -140,6 +141,7 @@ public class TileInputOutput extends TileEntity implements ILinkable, ITileEntit
         facing = ForgeDirection.getOrientation(tag.getByte("facing"));
         if (tag.hasKey("inventory"))
             inv = InventoryUtil.readInventory(tag.getTagList("inventory"));
+        tag.setString("name", name);
     }
 
     @Override
@@ -147,6 +149,7 @@ public class TileInputOutput extends TileEntity implements ILinkable, ITileEntit
         super.writeToNBT(tag);
         tag.setByte("facing", (byte)facing.ordinal());
         tag.setTag("inventory", InventoryUtil.writeInventory(inv));
+        name = tag.getString("name");
     }
 
     @Override
