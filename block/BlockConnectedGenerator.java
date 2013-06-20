@@ -17,7 +17,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.common.ConnectedMachines;
 import tpw_rules.connectedmachines.render.Texture;
-import tpw_rules.connectedmachines.tile.TileConnectedFurnace;
 import tpw_rules.connectedmachines.tile.TileConnectedGenerator;
 import tpw_rules.connectedmachines.util.Util;
 
@@ -32,7 +31,7 @@ public class BlockConnectedGenerator extends BlockContainer implements ITileEnti
         setStepSound(Block.soundMetalFootstep);
 
         GameRegistry.registerBlock(this, "CMGenerator");
-        GameRegistry.registerTileEntity(TileConnectedFurnace.class, "CMTEGenerator");
+        GameRegistry.registerTileEntity(TileConnectedGenerator.class, "CMTEGenerator");
         LanguageRegistry.addName(this, "Connected Generator");
     }
 
@@ -60,7 +59,7 @@ public class BlockConnectedGenerator extends BlockContainer implements ITileEnti
 
     @Override
     public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side) {
-        TileConnectedFurnace tile = (TileConnectedFurnace)world.getBlockTileEntity(x, y, z);
+        TileConnectedGenerator tile = (TileConnectedGenerator)world.getBlockTileEntity(x, y, z);
         if ((ForgeDirection.getOrientation(side) == ForgeDirection.UP) && (tile.getLink() != null)) {
             return Texture.blockLinked;
         }
@@ -72,6 +71,6 @@ public class BlockConnectedGenerator extends BlockContainer implements ITileEnti
 
     @Override
     public TileEntity createNewTileEntity(World world) {
-        return new TileConnectedFurnace();
+        return new TileConnectedGenerator();
     }
 }
