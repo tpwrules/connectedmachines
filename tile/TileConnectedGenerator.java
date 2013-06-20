@@ -12,6 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.api.ILinkable;
+import tpw_rules.connectedmachines.api.IPowerProvider;
 import tpw_rules.connectedmachines.api.LinkFinder;
 import tpw_rules.connectedmachines.network.ITileEntityPacketHandler;
 import tpw_rules.connectedmachines.network.InputPacket;
@@ -20,17 +21,20 @@ import tpw_rules.connectedmachines.network.PacketType;
 import tpw_rules.connectedmachines.util.InventoryUtil;
 import tpw_rules.connectedmachines.util.WCoord;
 
-public class TileConnectedGenerator extends TileEntity implements ILinkable, ITileEntityPacketHandler, IInventory {
+public class TileConnectedGenerator extends TileEntity implements ILinkable, ITileEntityPacketHandler, IInventory, IPowerProvider {
     public ForgeDirection facing;
     public TileController link;
     public WCoord linkCoord;
 
     private ItemStack[] inv;
 
+    private int powerBuffer;
+
     public TileConnectedGenerator() {
         facing = ForgeDirection.UP;
 
         inv = new ItemStack[9];
+        powerBuffer = 0;
     }
 
     @Override
@@ -146,6 +150,35 @@ public class TileConnectedGenerator extends TileEntity implements ILinkable, ITi
         super.writeToNBT(tag);
         tag.setByte("facing", (byte)facing.ordinal());
         tag.setTag("inventory", InventoryUtil.writeInventory(inv));
+    }
+
+    @Override
+    public int getPower(int request) {
+        int output = powerBuffer;
+        if (output >= request) {
+            powerBuffer = output-request;
+            return output;
+        }
+        int remaining = request-output;
+        for (int slot = 0; slot < getSizeInventory(); slot++) {
+            ItemStack stack = getStackInSlot(slot);
+            if (stack == null) continue;
+            int burnTime = TileEntityFurnace.getItemBurnTime(stack);
+            int itemCount = remaining/burnTime;
+            if (itemCount*burnTime < remaining)
+                itemCount++;
+            if (itemCount > stack.getMaxStackSize())
+                itemCount = stack.getMaxStackSize();
+            ItemStack fuel = decrStackSize(slot, itemCount);
+            output += (fuel.stackSize*burnTime);
+            remaining = (request-output);
+            if (output >= request) break;
+        }
+        if (output >= request)
+            powerBuffer = output-request;
+        else
+            powerBuffer = 0;
+        return output;
     }
 
     @Override
