@@ -1,7 +1,10 @@
 package tpw_rules.connectedmachines.tile;
 
 
+import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
@@ -19,6 +22,7 @@ import tpw_rules.connectedmachines.util.WCoord;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class TileController extends TileEntity implements ILinkable, IPowerConsumer, ITileEntityPacketHandler {
     public ForgeDirection facing;
@@ -26,6 +30,8 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
     public ArrayList<ILinkable> links;
     public HashMap<String, TileInputOutput> ioPorts;
     public ArrayList<String> ioPortList;
+
+    public HashMap<String, String[]> groups;
 
     public int powerBuffer;
     public int powerBufferMax;
@@ -36,6 +42,9 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
         facing = ForgeDirection.UP;
         ioPorts = new HashMap<String, TileInputOutput>();
         ioPortList = new ArrayList<String>();
+        groups = new HashMap<String, String[]>();
+        String[] t = {"DefaultI", "DefaultO"};
+        groups.put("Default", t);
     }
 
     @Override
@@ -149,6 +158,15 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
         super.readFromNBT(tag);
         facing = ForgeDirection.getOrientation(tag.getByte("facing"));
         powerBuffer = tag.getInteger("power");
+        NBTTagList groupList = tag.getTagList("groups");
+        if (groupList == null) return;
+        groups.clear();
+        for (int i = 0; i < groupList.tagCount(); i++) {
+            NBTTagList oneGroup = (NBTTagList)groupList.tagAt(i);
+            String name = oneGroup.tagAt(0).toString();
+            String[] data = {oneGroup.tagAt(1).toString(), oneGroup.tagAt(2).toString()};
+            groups.put(name, data);
+        }
     }
 
     @Override
@@ -156,6 +174,15 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
         super.writeToNBT(tag);
         tag.setByte("facing", (byte)facing.ordinal());
         tag.setInteger("power", powerBuffer);
+        NBTTagList groupList = new NBTTagList();
+        for (Map.Entry<String, String[]> entry : groups.entrySet()) {
+            NBTTagList oneGroup = new NBTTagList();
+            oneGroup.appendTag(new NBTTagString(entry.getKey()));
+            oneGroup.appendTag(new NBTTagString(entry.getValue()[0]));
+            oneGroup.appendTag(new NBTTagString(entry.getValue()[1]));
+            groupList.appendTag(oneGroup);
+        }
+        tag.setTag("groups", groupList);
     }
 
     @Override
