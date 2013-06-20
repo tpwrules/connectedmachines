@@ -52,7 +52,7 @@ public class GuiInputOutput extends GuiContainer {
     @Override
     protected void actionPerformed(GuiButton button) {
         if (!button.enabled) return;
-        OutputPacket packet = new OutputPacket(PacketType.GUI_UPDATE, 64, tile);
+        OutputPacket packet = new OutputPacket(PacketType.GUI_CHANGE, 64, tile);
         try {
             packet.data.writeUTF(ioName.getText());
         } catch (Exception e) {

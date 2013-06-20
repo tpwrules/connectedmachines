@@ -168,7 +168,7 @@ public class TileInputOutput extends TileEntity implements ILinkable, ITileEntit
                     link = null;
                 worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
                 break;
-            case GUI_UPDATE:
+            case GUI_CHANGE:
                 String newName;
                 try {
                     newName = packet.data.readUTF();
