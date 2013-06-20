@@ -4,7 +4,6 @@ package tpw_rules.connectedmachines.gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.util.StatCollector;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import tpw_rules.connectedmachines.tile.TileController;
@@ -15,6 +14,12 @@ public class GuiController extends GuiContainer {
     private GuiTextField groupName;
     private GuiTextField inputName;
     private GuiTextField outputName;
+
+    private int groupPos;
+    private int inputPos;
+    private int outputPos;
+
+    private String[] groupList;
 
     public GuiController(TileController controller) {
         super(new ContainerController(controller));
@@ -44,6 +49,30 @@ public class GuiController extends GuiContainer {
         groupName = new GuiTextField(this.fontRenderer, 32, 26, 120, 20);
         inputName = new GuiTextField(this.fontRenderer, 32, 48, 120, 20);
         outputName = new GuiTextField(this.fontRenderer, 32, 70, 120, 20);
+        groupList = controller.groups.keySet().toArray(new String[0]);
+        groupPos = 0;
+        inputPos = controller.ioPortList.indexOf(controller.groups.get(groupList[groupPos])[0]);
+        outputPos = controller.ioPortList.indexOf(controller.groups.get(groupList[groupPos])[1]);
+        updateText();
+    }
+
+    public int wrap(int val, int max) {
+        if (val >= max)
+            return 0;
+        else if (val < 0)
+            return max;
+        return val;
+    }
+
+    public void updateText() {
+        groupName.setText(groupList[groupPos]);
+        if (inputPos != -1 && outputPos != -1) {
+            inputName.setText(controller.ioPortList.get(inputPos));
+            outputName.setText(controller.ioPortList.get(outputPos));
+        } else {
+            inputName.setText("");
+            outputName.setText("");
+        }
     }
 
     @Override
@@ -53,7 +82,10 @@ public class GuiController extends GuiContainer {
 
     @Override
     protected void actionPerformed(GuiButton button) {
+        switch (button.id) {
+            case 0:
 
+        }
     }
 
     @Override
