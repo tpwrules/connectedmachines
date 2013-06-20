@@ -21,6 +21,8 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
     public TileController link;
     public WCoord linkCoord;
 
+    public String groupName;
+
     public TileConnectedFurnace() {
         facing = ForgeDirection.UP;
     }
@@ -68,12 +70,15 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         facing = ForgeDirection.getOrientation(tag.getByte("facing"));
+        groupName = tag.getString("groupName");
+        if (groupName == null) groupName = "Default";
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setByte("facing", (byte)facing.ordinal());
+        tag.setString("groupName", groupName);
     }
 
     @Override
