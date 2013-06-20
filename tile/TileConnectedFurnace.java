@@ -23,6 +23,7 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
 
     public TileConnectedFurnace() {
         facing = ForgeDirection.UP;
+        linkCoord = new WCoord(this.worldObj, 0, -1, 0);
     }
 
     @Override
