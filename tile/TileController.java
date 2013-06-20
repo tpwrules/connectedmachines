@@ -8,6 +8,7 @@ import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.api.ILinkable;
+import tpw_rules.connectedmachines.api.IPowerConsumer;
 import tpw_rules.connectedmachines.api.LinkFinder;
 import tpw_rules.connectedmachines.util.WCoord;
 
@@ -18,15 +19,26 @@ public class TileController extends TileEntity implements ILinkable {
 
     public ArrayList<ILinkable> links;
 
+    private int powerBuffer;
+    private int powerBufferMax;
+
+    private boolean started;
+
     public TileController() {
         facing = ForgeDirection.UP;
+        started = false;
     }
 
     @Override
     public void updateEntity() {
-        if (links == null && !worldObj.isRemote) {
+        if (worldObj.isRemote) return;
+        if (!started) {
+            resetNetwork();
             findMachines();
+            started = true;
         }
+        if (links == null)
+            findMachines();
     }
 
     @Override
