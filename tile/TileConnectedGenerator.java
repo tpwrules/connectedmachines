@@ -152,18 +152,17 @@ public class TileConnectedGenerator extends TileEntity implements ILinkable, ITi
     }
 
     @Override
-    public int getPower(int request_) {
-        int request = (request_/10)+1;
+    public int getPower(int request) {
         int output = powerBuffer;
         if (output >= request) {
             powerBuffer = output-request;
-            return output*10;
+            return request;
         }
         int remaining = request-output;
         for (int slot = 0; slot < getSizeInventory(); slot++) {
             ItemStack stack = getStackInSlot(slot);
             if (stack == null) continue;
-            int burnTime = TileEntityFurnace.getItemBurnTime(stack);
+            int burnTime = TileEntityFurnace.getItemBurnTime(stack)*10;
             int itemCount = remaining/burnTime;
             if (itemCount*burnTime < remaining)
                 itemCount++;
@@ -174,12 +173,14 @@ public class TileConnectedGenerator extends TileEntity implements ILinkable, ITi
             remaining = (request-output);
             if (output >= request) break;
         }
-        if (output >= request)
-            powerBuffer = output-request;
-        else
-            powerBuffer = 0;
         onInventoryChanged();
-        return output*10;
+        if (output >= request) {
+            powerBuffer = output-request;
+            return request;
+        } else {
+            powerBuffer = 0;
+            return output;
+        }
     }
 
     @Override
