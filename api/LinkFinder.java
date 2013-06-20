@@ -56,7 +56,7 @@ public class LinkFinder {
             return null;
 
         for (WCoord linkee : visited) {
-            ((ILinkable)linkee.getTileEntity()).setLink(controller);
+            ((ILinkable)linkee.getTileEntity()).setLink(controller, new WCoord(controller));
         }
 
         return controller;
@@ -104,7 +104,7 @@ public class LinkFinder {
 
         for (WCoord linkee : visited) {
             currentTile = (ILinkable)linkee.getTileEntity();
-            currentTile.setLink(controller);
+            currentTile.setLink(controller, new WCoord(controller));
             ret.add(currentTile);
         }
 

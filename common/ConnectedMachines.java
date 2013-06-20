@@ -25,6 +25,7 @@ public class ConnectedMachines {
     public static BlockController blockController;
     public static BlockMachineLink blockMachineLink;
     public static BlockConnectedFurnace blockConnectedFurnace;
+    public static BlockConnectedGenerator blockConnectedGenerator;
 
     public static TabMachines tabMachines;
 
@@ -39,6 +40,7 @@ public class ConnectedMachines {
         blockController = new BlockController(Config.blockControllerID);
         blockMachineLink = new BlockMachineLink(Config.blockMachineLinkID);
         blockConnectedFurnace = new BlockConnectedFurnace(Config.blockConnectedFurnaceID);
+        blockConnectedGenerator = new BlockConnectedGenerator(Config.blockConnectedGeneratorID);
 
         proxy.registerRenderers();
     }

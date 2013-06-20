@@ -1,6 +1,8 @@
 package tpw_rules.connectedmachines.tile;
 
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
@@ -8,7 +10,6 @@ import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.api.ILinkable;
-import tpw_rules.connectedmachines.api.LinkFinder;
 import tpw_rules.connectedmachines.network.ITileEntityPacketHandler;
 import tpw_rules.connectedmachines.network.InputPacket;
 import tpw_rules.connectedmachines.network.OutputPacket;
@@ -16,25 +17,21 @@ import tpw_rules.connectedmachines.network.PacketType;
 import tpw_rules.connectedmachines.util.WCoord;
 
 public class TileMachineLink extends TileEntity implements ITileEntityPacketHandler, ILinkable {
+    public boolean checkNeighbors; // set when the link needs to check its neighbors for connections
     public boolean[] connectedNeighbors;
 
     public TileController link;
-    public WCoord linkCoord;
+    public WCoord linkPos;
 
     public TileMachineLink() {
+        checkNeighbors = true;
         connectedNeighbors = new boolean[6]; // which neighbors we are connected to
     }
 
     @Override
-    public void setLink(TileController link, WCoord linkCoord) {
+    public void setLink(TileController link, WCoord linkPos) {
         this.link = link;
-        this.linkCoord = linkCoord;
-        OutputPacket packet = new OutputPacket(PacketType.UPDATE_LINK_STATE, 16, this);
-        if (link == null)
-            new WCoord(this.worldObj, 0, -1, 0).writeToPacket(packet.data);
-        else
-            linkCoord.writeToPacket(packet.data);
-        packet.sendDimension();
+        this.linkPos = linkPos;
     }
 
     @Override
@@ -43,19 +40,12 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
     }
 
     @Override
-    public void placed() {
-        performNeighborCheck();
-        LinkFinder.updateNetwork(this);
-    }
-
-    @Override
-    public void broken() {
-        if (link != null)
-            link.resetNetwork();
-    }
-
-    @Override
     public void updateEntity() {
+        if (checkNeighbors && FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) { // update neighbors if necessary
+            performNeighborCheck();
+        } else {
+            checkNeighbors = false;
+        }
     }
 
     public void performNeighborCheck() {
@@ -72,6 +62,7 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
             }
         }
         packet.sendDimension(); // send the packet off to the client
+        checkNeighbors = false; // we don't need to check neighbors anymore
     }
 
     @Override
@@ -106,14 +97,6 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
                         throw new RuntimeException(e);
                     }
                 }
-                worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
-                break;
-            case UPDATE_LINK_STATE:
-                linkCoord = WCoord.readFromPacket(packet.data);
-                if (linkCoord.y >= 0)
-                    link = (TileController)linkCoord.getTileEntity();
-                else
-                    link = null;
                 worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
                 break;
         }

@@ -10,12 +10,12 @@ import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.api.ILinkable;
 import tpw_rules.connectedmachines.util.WCoord;
 
-public class TileConnectedFurnace extends TileEntity implements ILinkable {
+public class TileConnectedGenerator extends TileEntity implements ILinkable {
     public ForgeDirection facing;
     public TileController link;
     public WCoord linkPos;
 
-    public TileConnectedFurnace() {
+    public TileConnectedGenerator() {
         facing = ForgeDirection.UP;
     }
 

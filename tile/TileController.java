@@ -9,6 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.api.ILinkable;
 import tpw_rules.connectedmachines.api.LinkFinder;
+import tpw_rules.connectedmachines.util.WCoord;
 
 import java.util.ArrayList;
 
@@ -29,7 +30,7 @@ public class TileController extends TileEntity implements ILinkable {
     }
 
     @Override
-    public void setLink(TileController link) {
+    public void setLink(TileController link, WCoord linkPos) {
     }
 
     @Override
