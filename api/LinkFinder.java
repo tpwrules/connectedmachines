@@ -50,6 +50,8 @@ public class LinkFinder {
                 break;
             }
         }
+
+        currentTile.getLink().findMachines();
     }
 
     public static ArrayList<ILinkable> findMachines(TileController controller, boolean reset) {
