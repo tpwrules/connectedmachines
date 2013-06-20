@@ -8,13 +8,17 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+import tpw_rules.connectedmachines.network.OutputPacket;
+import tpw_rules.connectedmachines.network.PacketType;
 import tpw_rules.connectedmachines.tile.TileInputOutput;
 
 public class GuiInputOutput extends GuiContainer {
     private GuiTextField ioName;
+    private TileInputOutput tile;
 
     public GuiInputOutput(InventoryPlayer inventoryPlayer, TileInputOutput inputOutput) {
         super(new ContainerInputOutput(inventoryPlayer, inputOutput));
+        tile = inputOutput;
         ySize = 196;
     }
 
@@ -28,13 +32,13 @@ public class GuiInputOutput extends GuiContainer {
     public void initGui() {
         Keyboard.enableRepeatEvents(false);
         buttonList.clear();
-        buttonList.add(new GuiButton(0, 130+(width-xSize)/2, 80+(height-ySize)/2, 40, 20, "Set"));
+        buttonList.add(new GuiButton(0, 130 + (width - xSize) / 2, 80 + (height - ySize) / 2, 40, 20, "Set"));
         ioName = new GuiTextField(this.fontRenderer, 8, 80, 115, 20);
         ioName.setFocused(true);
         ioName.setCanLoseFocus(true);
-        ioName.setText("Default");
+        ioName.setText(tile.name);
         ioName.setMaxStringLength(128);
-        ((GuiButton)buttonList.get(0)).enabled = true;
+        ((GuiButton)buttonList.get(0)).enabled = (tile.name != ioName.getText());
         guiLeft = (width-xSize)/2;
         guiTop = (height-ySize)/2;
         super.initGui();
@@ -48,11 +52,20 @@ public class GuiInputOutput extends GuiContainer {
     @Override
     protected void actionPerformed(GuiButton button) {
         if (!button.enabled) return;
+        OutputPacket packet = new OutputPacket(PacketType.GUI_UPDATE, 64, tile);
+        try {
+            packet.data.writeUTF(ioName.getText());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        packet.sendServer();
+        tile.name = ioName.getText();
     }
 
     @Override
     protected void keyTyped(char par1, int par2) {
         ioName.textboxKeyTyped(par1, par2);
+        ((GuiButton)buttonList.get(0)).enabled = (tile.name != ioName.getText());
         if (par2 == 1) // escape
             super.keyTyped(par1, par2);
     }
