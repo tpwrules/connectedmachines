@@ -40,7 +40,17 @@ public class BlockConnectedGenerator extends BlockContainer implements ITileEnti
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entity, ItemStack item) {
         TileConnectedGenerator tile = (TileConnectedGenerator)world.getBlockTileEntity(x, y, z);
         tile.facing = Util.getPlayerFacing(entity);
+        if (!world.isRemote)
+            tile.placed();
     }
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, int side, int meta) {
+        if (!world.isRemote)
+            ((TileConnectedGenerator)world.getBlockTileEntity(x, y, z)).broken();
+        super.breakBlock(world, x, y, z, side, meta);
+    }
+
 
     @Override
     public void registerIcons(IconRegister r) {

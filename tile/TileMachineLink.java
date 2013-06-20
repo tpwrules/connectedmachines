@@ -19,22 +19,12 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
     public boolean[] connectedNeighbors;
 
     public TileController link;
-<<<<<<< HEAD
-    public WCoord linkPos;
-=======
     public WCoord linkCoord;
->>>>>>> 85c4699f419471c45a4a2943c61ecb98b96b494a
 
     public TileMachineLink() {
         connectedNeighbors = new boolean[6]; // which neighbors we are connected to
     }
 
-    @Override
-<<<<<<< HEAD
-    public void setLink(TileController link, WCoord linkPos) {
-        this.link = link;
-        this.linkPos = linkPos;
-=======
     public void setLink(TileController link, WCoord linkCoord) {
         this.link = link;
         this.linkCoord = linkCoord;
@@ -44,7 +34,6 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
         else
             linkCoord.writeToPacket(packet.data);
         packet.sendDimension();
->>>>>>> 85c4699f419471c45a4a2943c61ecb98b96b494a
     }
 
     @Override

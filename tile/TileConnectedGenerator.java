@@ -8,6 +8,7 @@ import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.api.ILinkable;
+import tpw_rules.connectedmachines.api.LinkFinder;
 import tpw_rules.connectedmachines.util.WCoord;
 
 public class TileConnectedGenerator extends TileEntity implements ILinkable {
@@ -28,6 +29,17 @@ public class TileConnectedGenerator extends TileEntity implements ILinkable {
     @Override
     public TileController getLink() {
         return this.link;
+    }
+
+    @Override
+    public void placed() {
+        LinkFinder.updateNetwork(this);
+    }
+
+    @Override
+    public void broken() {
+        if (link != null)
+            link.resetNetwork();
     }
 
     @Override

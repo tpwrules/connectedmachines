@@ -8,35 +8,23 @@ import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.api.ILinkable;
-<<<<<<< HEAD
-=======
 import tpw_rules.connectedmachines.api.LinkFinder;
 import tpw_rules.connectedmachines.network.ITileEntityPacketHandler;
 import tpw_rules.connectedmachines.network.InputPacket;
 import tpw_rules.connectedmachines.network.OutputPacket;
 import tpw_rules.connectedmachines.network.PacketType;
->>>>>>> 85c4699f419471c45a4a2943c61ecb98b96b494a
 import tpw_rules.connectedmachines.util.WCoord;
 
 public class TileConnectedFurnace extends TileEntity implements ILinkable, ITileEntityPacketHandler {
     public ForgeDirection facing;
     public TileController link;
-<<<<<<< HEAD
-    public WCoord linkPos;
-=======
     public WCoord linkCoord;
->>>>>>> 85c4699f419471c45a4a2943c61ecb98b96b494a
 
     public TileConnectedFurnace() {
         facing = ForgeDirection.UP;
     }
 
     @Override
-<<<<<<< HEAD
-    public void setLink(TileController link, WCoord linkPos) {
-        this.link = link;
-        this.linkPos = linkPos;
-=======
     public void setLink(TileController link, WCoord linkCoord) {
         this.link = link;
         this.linkCoord = linkCoord;
@@ -46,7 +34,6 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
         else
             linkCoord.writeToPacket(packet.data);
         packet.sendDimension();
->>>>>>> 85c4699f419471c45a4a2943c61ecb98b96b494a
     }
 
     @Override
@@ -69,14 +56,14 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         facing = ForgeDirection.getOrientation(tag.getByte("facing"));
-        linkPos = WCoord.readFromNBT(tag, "linkPos");
+        linkCoord = WCoord.readFromNBT(tag, "linkPos");
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setByte("facing", (byte)facing.ordinal());
-        linkPos.writeToNBT(tag, "linkPos");
+        linkCoord.writeToNBT(tag, "linkPos");
     }
 
     @Override

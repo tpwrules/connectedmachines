@@ -24,22 +24,13 @@ public class TileController extends TileEntity implements ILinkable {
 
     @Override
     public void updateEntity() {
-<<<<<<< HEAD
-        if (links == null) {
-            links = LinkFinder.findMachines(this);
-=======
         if (links == null && !worldObj.isRemote) {
             findMachines();
->>>>>>> 85c4699f419471c45a4a2943c61ecb98b96b494a
         }
     }
 
     @Override
-<<<<<<< HEAD
-    public void setLink(TileController link, WCoord linkPos) {
-=======
     public void setLink(TileController link, WCoord linkCoord) {
->>>>>>> 85c4699f419471c45a4a2943c61ecb98b96b494a
     }
 
     @Override
