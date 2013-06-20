@@ -28,13 +28,10 @@ public class TileConnectedGenerator extends TileEntity implements ILinkable, ITi
 
     private ItemStack[] inv;
 
-    private int powerBuffer;
-
     public TileConnectedGenerator() {
         facing = ForgeDirection.UP;
         linkCoord = new WCoord(this.worldObj, 0, -1, 0);
         inv = new ItemStack[9];
-        powerBuffer = 0;
     }
 
     @Override
@@ -153,11 +150,7 @@ public class TileConnectedGenerator extends TileEntity implements ILinkable, ITi
 
     @Override
     public int getPower(int request) {
-        int output = powerBuffer;
-        if (output >= request) {
-            powerBuffer = output-request;
-            return request;
-        }
+        int output = 0;
         int remaining = request-output;
         for (int slot = 0; slot < getSizeInventory(); slot++) {
             ItemStack stack = getStackInSlot(slot);
@@ -174,13 +167,7 @@ public class TileConnectedGenerator extends TileEntity implements ILinkable, ITi
             if (output >= request) break;
         }
         onInventoryChanged();
-        if (output >= request) {
-            powerBuffer = output-request;
-            return request;
-        } else {
-            powerBuffer = 0;
-            return output;
-        }
+        return output;
     }
 
     @Override
