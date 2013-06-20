@@ -9,6 +9,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
@@ -18,6 +19,7 @@ import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.common.ConnectedMachines;
 import tpw_rules.connectedmachines.render.Texture;
 import tpw_rules.connectedmachines.tile.TileConnectedGenerator;
+import tpw_rules.connectedmachines.util.InventoryUtil;
 import tpw_rules.connectedmachines.util.Util;
 
 public class BlockConnectedGenerator extends BlockContainer implements ITileEntityProvider {
@@ -44,9 +46,19 @@ public class BlockConnectedGenerator extends BlockContainer implements ITileEnti
     }
 
     @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player,
+                                    int meta, float hitX, float hitY, float hitZ) {
+        if (player.isSneaking())
+            return false;
+        player.openGui(ConnectedMachines.instance, 0, world, x, y, z);
+        return true;
+    }
+
+    @Override
     public void breakBlock(World world, int x, int y, int z, int side, int meta) {
         if (!world.isRemote)
             ((TileConnectedGenerator)world.getBlockTileEntity(x, y, z)).broken();
+        InventoryUtil.vomitItems(world, x, y, z);
         super.breakBlock(world, x, y, z, side, meta);
     }
 
