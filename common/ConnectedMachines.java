@@ -28,6 +28,7 @@ public class ConnectedMachines {
     public static BlockMachineLink blockMachineLink;
     public static BlockConnectedFurnace blockConnectedFurnace;
     public static BlockConnectedGenerator blockConnectedGenerator;
+    public static BlockInputOutput blockInputOutput;
 
     public static TabMachines tabMachines;
 
@@ -43,6 +44,7 @@ public class ConnectedMachines {
         blockMachineLink = new BlockMachineLink(Config.blockMachineLinkID);
         blockConnectedFurnace = new BlockConnectedFurnace(Config.blockConnectedFurnaceID);
         blockConnectedGenerator = new BlockConnectedGenerator(Config.blockConnectedGeneratorID);
+        blockInputOutput = new BlockInputOutput(Config.blockInputOutputID);
 
         NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
 

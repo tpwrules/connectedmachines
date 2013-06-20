@@ -9,6 +9,7 @@ public class Config {
     public static int blockMachineLinkID;
     public static int blockConnectedFurnaceID;
     public static int blockConnectedGeneratorID;
+    public static int blockInputOutputID;
 
     public static void loadConfig(FMLPreInitializationEvent e) {
         Configuration config = new Configuration(e.getSuggestedConfigurationFile());
@@ -18,6 +19,7 @@ public class Config {
         blockMachineLinkID = config.getBlock("Machine Link", 2601).getInt();
         blockConnectedFurnaceID = config.getBlock("Connected Furnace", 2602).getInt();
         blockConnectedGeneratorID = config.getBlock("Connected Generator", 2603).getInt();
+        blockInputOutputID = config.getBlock("Input/Output", 2604).getInt();
 
         config.save();
     }
