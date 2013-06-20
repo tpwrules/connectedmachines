@@ -25,6 +25,7 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
 
     public ArrayList<ILinkable> links;
     public HashMap<String, TileInputOutput> ioPorts;
+    public ArrayList<String> ioPortList;
 
     public int powerBuffer;
     public int powerBufferMax;
@@ -34,6 +35,7 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
     public TileController() {
         facing = ForgeDirection.UP;
         ioPorts = new HashMap<String, TileInputOutput>();
+        ioPortList = new ArrayList<String>();
     }
 
     @Override
@@ -93,14 +95,35 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
         for (ILinkable machine : links) {
             if (machine instanceof IPowerConsumer)
                 powerBufferMax += ((IPowerConsumer)machine).getBufferSize();
-            else if (machine instanceof TileInputOutput)
+            else if (machine instanceof TileInputOutput) {
                 ioPorts.put(((TileInputOutput)machine).name, (TileInputOutput)machine);
+            }
         }
+        OutputPacket packet = new OutputPacket(PacketType.NAME_UPDATE, 64, this);
+        try {
+            packet.data.writeBoolean(true);
+            packet.data.writeInt(ioPorts.size());
+            for (String name : ioPorts.keySet()) {
+                packet.data.writeUTF(name);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        packet.sendDimension();
     }
 
     public void changeIOName(TileInputOutput tile, String next) {
         ioPorts.remove(tile.name);
         ioPorts.put(next, tile);
+        OutputPacket packet = new OutputPacket(PacketType.NAME_UPDATE, 64, this);
+        try {
+            packet.data.writeBoolean(false);
+            packet.data.writeUTF(tile.name);
+            packet.data.writeUTF(next);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        packet.sendDimension();
         tile.name = next;
     }
 
@@ -137,15 +160,27 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
 
     @Override
     public void handlePacket(InputPacket packet) {
-        switch (packet.type) {
-            case GUI_UPDATE:
-                try {
+        try {
+            switch (packet.type) {
+                case GUI_UPDATE:
                     powerBuffer = packet.data.readInt();
                     powerBufferMax = packet.data.readInt();
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-                break;
+                    break;
+                case NAME_UPDATE:
+                    if (packet.data.readBoolean()) {
+                        ioPortList.clear();
+                        int count = packet.data.readInt();
+                        for (int i = 0; i < count; i++) {
+                            ioPortList.add(packet.data.readUTF());
+                        }
+                    } else {
+                        ioPortList.remove(packet.data.readUTF());
+                        ioPortList.add(packet.data.readUTF());
+                    }
+                    break;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
