@@ -54,18 +54,23 @@ public class ContainerConnectedGenerator extends Container {
         stack = slotStack.copy();
 
         // merge with player inventory if source is TE
-        if (slot < 9)
+        if (slot < 9) {
             if (!this.mergeItemStack(slotStack, 9, 45, true))
                 return null;
-        else if (!this.mergeItemStack(slotStack, 0, 9, false)) // merge with TE if source is player
+        } else if (!this.mergeItemStack(slotStack, 0, 9, false)) {// merge with TE if source is player
             return null;
+        }
 
         if (slotStack.stackSize == 0)
             slotObject.putStack(null);
         else
             slotObject.onSlotChanged();
 
+        if (slotStack.stackSize == stack.stackSize)
+            return null;
+
         slotObject.onPickupFromSlot(player, slotStack);
+
         return stack;
     }
 }
