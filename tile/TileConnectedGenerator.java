@@ -178,6 +178,7 @@ public class TileConnectedGenerator extends TileEntity implements ILinkable, ITi
             powerBuffer = output-request;
         else
             powerBuffer = 0;
+        onInventoryChanged();
         return output*10;
     }
 
