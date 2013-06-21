@@ -2,7 +2,6 @@ package tpw_rules.connectedmachines.tile;
 
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
@@ -172,6 +171,41 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
             }
         }
         return output;
+    }
+
+    public ItemStack yieldFinishedItem(String group, ItemStack stack) {
+        if (!groups.containsKey(group)) return stack;
+        String outputName = groups.get(group)[2];
+        if (!ioPorts.containsKey(outputName)) return stack;
+        TileInputOutput outputPort = ioPorts.get(outputName);
+        boolean changed = false;
+        for (int slot = 0; slot < outputPort.getSizeInventory(); slot++) {
+            ItemStack outStack = outputPort.getStackInSlot(slot);
+            if (outStack == null) continue;
+            if (!outStack.isStackable()) continue;
+            if (!(stack.itemID == outStack.itemID && (!stack.getHasSubtypes() || stack.getItemDamage() == outStack.getItemDamage()) && ItemStack.areItemStackTagsEqual(stack, outStack))) {
+                continue; // stacks aren't equal
+            }
+            if (stack.stackSize+outStack.stackSize <= outStack.getMaxStackSize()) {
+                outStack.stackSize += stack.stackSize;
+                outputPort.onInventoryChanged();
+                return null;
+            } else {
+                stack.stackSize -= outStack.getMaxStackSize()-outStack.stackSize;
+                outStack.stackSize = outStack.getMaxStackSize();
+                changed = true;
+            }
+        }
+        for (int slot = 0; slot < outputPort.getSizeInventory(); slot++) {
+            ItemStack outStack = outputPort.getStackInSlot(slot);
+            if (outStack != null) continue;
+            changed = true;
+            outputPort.setInventorySlotContents(slot, stack);
+            stack = null;
+        }
+        if (changed)
+            outputPort.onInventoryChanged();
+        return stack;
     }
 
     @Override
