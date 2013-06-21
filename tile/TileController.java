@@ -1,6 +1,7 @@
 package tpw_rules.connectedmachines.tile;
 
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -10,10 +11,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
-import tpw_rules.connectedmachines.api.ILinkable;
-import tpw_rules.connectedmachines.api.IPowerConsumer;
-import tpw_rules.connectedmachines.api.IPowerProvider;
-import tpw_rules.connectedmachines.api.LinkFinder;
+import tpw_rules.connectedmachines.api.*;
 import tpw_rules.connectedmachines.network.ITileEntityPacketHandler;
 import tpw_rules.connectedmachines.network.InputPacket;
 import tpw_rules.connectedmachines.network.OutputPacket;
@@ -151,6 +149,29 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
             return false;
         powerBuffer -= amount;
         return true;
+    }
+
+    public ItemStack getItemsForOperation(String group, IConnectedMachine machine) {
+        if (!groups.containsKey(group)) return null;
+        String inputName = groups.get(group)[0];
+        if (!ioPorts.containsKey(inputName)) return null;
+        TileInputOutput inputPort = ioPorts.get(inputName);
+        ItemStack output = null;
+        int remaining = 0;
+        for (int slot = 0; slot < inputPort.getSizeInventory(); slot++) {
+            ItemStack stack = inputPort.getStackInSlot(slot);
+            if (stack == null) continue;
+            if (remaining == 0)
+                remaining = machine.getOperationStackSize(stack);
+            if (remaining > 0 && remaining <= stack.stackSize) {
+                output = stack.splitStack(remaining);
+                if (stack.stackSize == 0)
+                    inputPort.setInventorySlotContents(slot, null);
+                inputPort.onInventoryChanged();
+                break;
+            }
+        }
+        return output;
     }
 
     @Override
