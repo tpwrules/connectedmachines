@@ -41,6 +41,7 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
 
     @Override
     public void updateEntity() {
+        if (worldObj.isRemote) return;
         if (link == null) return;
         link.consumePower(1);
     }
