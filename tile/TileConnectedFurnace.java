@@ -55,19 +55,17 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
         if (link == null) return;
         if (inv[1] != null)
             inv[1] = link.yieldFinishedItem(groupName, inv[1]);
+        if (!link.consumePower(1)) return;
         if (inv[0] == null && inv[1] == null) {
             inv[0] = link.getItemsForOperation(groupName, this);
             if (inv[0] != null)
                 smeltTime = 100;
         }
-        if (smeltTime > 0) {
-            if (!link.consumePower(10)) return;
-            if (--smeltTime == 0) {
-                inv[1] = FurnaceRecipes.smelting().getSmeltingResult(inv[0]).copy();
-                inv[0] = null;
-            }
-        } else {
-            link.consumePower(1);
+        if (smeltTime == 0) return;
+        if (!link.consumePower(9)) return;
+        if (--smeltTime == 0) {
+            inv[1] = FurnaceRecipes.smelting().getSmeltingResult(inv[0]).copy();
+            inv[0] = null;
         }
     }
 
