@@ -9,6 +9,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
@@ -16,6 +17,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import tpw_rules.connectedmachines.common.ConnectedMachines;
+import tpw_rules.connectedmachines.gui.GuiType;
 import tpw_rules.connectedmachines.render.Texture;
 import tpw_rules.connectedmachines.tile.TileConnectedFurnace;
 import tpw_rules.connectedmachines.util.Util;
@@ -41,6 +43,17 @@ public class BlockConnectedFurnace extends BlockContainer implements ITileEntity
         tile.facing = Util.getPlayerFacing(entity);
         if (!world.isRemote)
             tile.placed();
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player,
+                                    int meta, float hitX, float hitY, float hitZ) {
+        if (player.isSneaking())
+            return false;
+        if (((TileConnectedFurnace)world.getBlockTileEntity(x, y, z)).getLink() == null)
+            return true;
+        player.openGui(ConnectedMachines.instance, GuiType.GUI_CONNECTED_MACHINE.ordinal(), world, x, y, z);
+        return true;
     }
 
     @Override

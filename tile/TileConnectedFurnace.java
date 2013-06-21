@@ -35,6 +35,7 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
         facing = ForgeDirection.UP;
         smeltTime = 0;
         inv = new ItemStack[2];
+        groupName = "Default";
     }
 
     @Override
@@ -103,6 +104,23 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
     }
 
     @Override
+    public String getGroupName() {
+        return groupName;
+    }
+
+    @Override
+    public void setGroupName(String name) {
+        groupName = name;
+        OutputPacket packet = new OutputPacket(PacketType.GROUP_UPDATE, 64, this);
+        try {
+            packet.data.writeUTF(name);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        packet.sendServer();
+    }
+
+    @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         facing = ForgeDirection.getOrientation(tag.getByte("facing"));
@@ -132,6 +150,13 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
                 else
                     link = null;
                 worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
+                break;
+            case GROUP_UPDATE:
+                try {
+                    groupName = packet.data.readUTF();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
                 break;
         }
     }

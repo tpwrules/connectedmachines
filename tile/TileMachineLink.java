@@ -23,7 +23,6 @@ public class TileMachineLink extends TileEntity implements ITileEntityPacketHand
 
     public TileMachineLink() {
         connectedNeighbors = new boolean[6]; // which neighbors we are connected to
-        linkCoord = new WCoord(this.worldObj, 0, -1, 0);
     }
 
     public void setLink(TileController link, WCoord linkCoord) {
