@@ -260,6 +260,11 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
                         ioPortList.add(packet.data.readUTF());
                     }
                     break;
+                case GROUP_UPDATE:
+                    if (!packet.data.readBoolean())
+                        groups.remove(packet.data.readUTF());
+                    String[] t = {packet.data.readUTF(), packet.data.readUTF()};
+                    groups.put(packet.data.readUTF(), t);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

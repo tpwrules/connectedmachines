@@ -6,6 +6,8 @@ import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+import tpw_rules.connectedmachines.network.OutputPacket;
+import tpw_rules.connectedmachines.network.PacketType;
 import tpw_rules.connectedmachines.tile.TileController;
 
 public class GuiController extends GuiContainer {
@@ -14,6 +16,9 @@ public class GuiController extends GuiContainer {
     private GuiTextField groupName;
     private GuiTextField inputName;
     private GuiTextField outputName;
+    private String oldGroupName;
+
+    private boolean isNew;
 
     private int groupPos;
     private int inputPos;
@@ -53,7 +58,8 @@ public class GuiController extends GuiContainer {
         groupPos = 0;
         inputPos = controller.ioPortList.indexOf(controller.groups.get(groupList[groupPos])[0]);
         outputPos = controller.ioPortList.indexOf(controller.groups.get(groupList[groupPos])[1]);
-        updateText();
+        isNew = false;
+        updateText(true);
     }
 
     public int wrap(int val, int max) {
@@ -64,8 +70,11 @@ public class GuiController extends GuiContainer {
         return val;
     }
 
-    public void updateText() {
-        groupName.setText(groupList[groupPos]);
+    public void updateText(boolean updateGroup) {
+        if (updateGroup) {
+            groupName.setText(groupList[groupPos]);
+            oldGroupName = groupList[groupPos];
+        }
         if (inputPos != -1 && outputPos != -1) {
             inputName.setText(controller.ioPortList.get(inputPos));
             outputName.setText(controller.ioPortList.get(outputPos));
@@ -95,8 +104,26 @@ public class GuiController extends GuiContainer {
             case 5:
                 outputPos = wrap(++outputPos, controller.ioPortList.size());
                 break;
+            case 6:
+                OutputPacket packet = new OutputPacket(PacketType.GROUP_UPDATE, 64, controller);
+                try {
+                    packet.data.writeBoolean(isNew);
+                    if (!isNew)
+                        packet.data.writeUTF(oldGroupName);
+                    packet.data.writeUTF(inputName.getText());
+                    packet.data.writeUTF(outputName.getText());
+                    packet.data.writeUTF(groupName.getText());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                packet.sendServer();
+                if (!isNew)
+                    controller.groups.remove(oldGroupName);
+                String[] t = {inputName.getText(), outputName.getText()};
+                controller.groups.put(groupName.getText(), t);
+                break;
         }
-        updateText();
+        updateText(false);
     }
 
     @Override
