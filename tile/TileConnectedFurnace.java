@@ -1,12 +1,15 @@
 package tpw_rules.connectedmachines.tile;
 
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
+import tpw_rules.connectedmachines.api.IConnectedMachine;
 import tpw_rules.connectedmachines.api.ILinkable;
 import tpw_rules.connectedmachines.api.IPowerConsumer;
 import tpw_rules.connectedmachines.api.LinkFinder;
@@ -16,7 +19,7 @@ import tpw_rules.connectedmachines.network.OutputPacket;
 import tpw_rules.connectedmachines.network.PacketType;
 import tpw_rules.connectedmachines.util.WCoord;
 
-public class TileConnectedFurnace extends TileEntity implements ILinkable, ITileEntityPacketHandler, IPowerConsumer {
+public class TileConnectedFurnace extends TileEntity implements ILinkable, ITileEntityPacketHandler, IPowerConsumer, IConnectedMachine {
     public ForgeDirection facing;
     public TileController link;
     public WCoord linkCoord;
@@ -44,6 +47,13 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
         if (worldObj.isRemote) return;
         if (link == null) return;
         link.consumePower(1);
+    }
+
+    @Override
+    public int getOperationStackSize(ItemStack stack) {
+        ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(stack);
+        if (result == null) return 0;
+        return result.stackSize;
     }
 
     @Override
