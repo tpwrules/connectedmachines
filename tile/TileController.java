@@ -222,6 +222,7 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
             String[] data = {oneGroup.tagAt(1).toString(), oneGroup.tagAt(2).toString()};
             groups.put(name, data);
         }
+        return;
     }
 
     @Override

@@ -56,9 +56,6 @@ public class GuiController extends GuiContainer {
         outputName = new GuiTextField(this.fontRenderer, 32, 70, 120, 20);
         groupList = controller.groups.keySet().toArray(new String[0]);
         groupPos = 0;
-        inputPos = controller.ioPortList.indexOf(controller.groups.get(groupList[groupPos])[0]);
-        outputPos = controller.ioPortList.indexOf(controller.groups.get(groupList[groupPos])[1]);
-        isNew = false;
         updateText(true);
     }
 
@@ -66,14 +63,17 @@ public class GuiController extends GuiContainer {
         if (val >= max)
             return 0;
         else if (val < 0)
-            return max;
+            return max-1;
         return val;
     }
 
     public void updateText(boolean updateGroup) {
         if (updateGroup) {
+            isNew = false;
             groupName.setText(groupList[groupPos]);
             oldGroupName = groupList[groupPos];
+            inputPos = controller.ioPortList.indexOf(controller.groups.get(groupList[groupPos])[0]);
+            outputPos = controller.ioPortList.indexOf(controller.groups.get(groupList[groupPos])[1]);
         }
         if (inputPos != -1 && outputPos != -1) {
             inputName.setText(controller.ioPortList.get(inputPos));
@@ -92,6 +92,12 @@ public class GuiController extends GuiContainer {
     @Override
     protected void actionPerformed(GuiButton button) {
         switch (button.id) {
+            case 0:
+                groupPos = wrap(--groupPos, groupList.length);
+                break;
+            case 1:
+                groupPos = wrap(++groupPos, groupList.length);
+                break;
             case 2:
                 inputPos = wrap(--inputPos, controller.ioPortList.size());
                 break;
@@ -121,9 +127,24 @@ public class GuiController extends GuiContainer {
                     controller.groups.remove(oldGroupName);
                 String[] t = {inputName.getText(), outputName.getText()};
                 controller.groups.put(groupName.getText(), t);
+                groupList = controller.groups.keySet().toArray(new String[0]);
+                for (int i = 0; i < groupList.length; i++) {
+                    if (groupList[i].equals(groupName.getText())) {
+                        groupPos = i;
+                        break;
+                    }
+                }
+                isNew = false;
+                break;
+            case 7:
+                isNew = true;
+                oldGroupName = "";
+                inputPos = 0;
+                outputPos = 0;
+                groupName.setText("New");
                 break;
         }
-        updateText(false);
+        updateText(button.id <= 1);
     }
 
     @Override
