@@ -84,7 +84,7 @@ public class BlockConnectedFurnace extends BlockContainer implements ITileEntity
             return Texture.blockLinked;
         }
         else if (ForgeDirection.getOrientation(side) == tile.facing) {
-            return Texture.blockConnectedFurnace;
+            return tile.cooking ? Texture.blockConnectedFurnaceActive : Texture.blockConnectedFurnace;
         }
         return Texture.blockSide;
     }

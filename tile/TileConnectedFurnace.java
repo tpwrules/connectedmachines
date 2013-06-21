@@ -31,6 +31,8 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
 
     public ItemStack[] inv;
 
+    public boolean cooking;
+
     public TileConnectedFurnace() {
         facing = ForgeDirection.UP;
         smeltTime = 0;
@@ -63,10 +65,22 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
                 smeltTime = 100;
         }
         if (smeltTime == 0) return;
-        if (!link.consumePower(9)) return;
+        if (!link.consumePower(9)) {
+            if (cooking) {
+                cooking = false;
+                sendFurnaceState();
+            }
+            return;
+        }
         if (--smeltTime == 0) {
             inv[1] = FurnaceRecipes.smelting().getSmeltingResult(inv[0]).copy();
             inv[0] = null;
+            cooking = false;
+            sendFurnaceState();
+        }
+        if (!cooking && smeltTime > 0) {
+            cooking = true;
+            sendFurnaceState();
         }
     }
 
@@ -91,6 +105,16 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
     public void broken() {
         if (link != null)
             link.resetNetwork();
+    }
+
+    public void sendFurnaceState() {
+        OutputPacket packet = new OutputPacket(PacketType.MACHINE_UPDATE, 1, this);
+        try {
+            packet.data.writeBoolean(cooking);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        packet.sendDimension();
     }
 
     @Override
@@ -129,6 +153,7 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
         if (tag.hasKey("inventory"))
             inv = InventoryUtil.readInventory(tag.getTagList("inventory"));
         smeltTime = tag.getInteger("smeltTime");
+        cooking = smeltTime > 0;
     }
 
     @Override
@@ -157,6 +182,14 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
+                break;
+            case MACHINE_UPDATE:
+                try {
+                    cooking = packet.data.readBoolean();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
                 break;
         }
     }
