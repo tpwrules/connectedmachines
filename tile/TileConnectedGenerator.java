@@ -30,7 +30,6 @@ public class TileConnectedGenerator extends TileEntity implements ILinkable, ITi
 
     public TileConnectedGenerator() {
         facing = ForgeDirection.UP;
-        linkCoord = new WCoord(this.worldObj, 0, -1, 0);
         inv = new ItemStack[9];
     }
 
