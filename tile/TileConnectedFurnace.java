@@ -107,6 +107,7 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
         if (groupName.equals("")) groupName = "Default";
         if (tag.hasKey("inventory"))
             inv = InventoryUtil.readInventory(tag.getTagList("inventory"));
+        smeltTime = tag.getInteger("smeltTime");
     }
 
     @Override
@@ -115,6 +116,7 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
         tag.setByte("facing", (byte)facing.ordinal());
         tag.setString("groupName", groupName);
         tag.setTag("inventory", InventoryUtil.writeInventory(inv));
+        tag.setInteger("smeltTime", smeltTime);
     }
 
     @Override
