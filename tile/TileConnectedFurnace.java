@@ -53,7 +53,22 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
     public void updateEntity() {
         if (worldObj.isRemote) return;
         if (link == null) return;
-        link.consumePower(1);
+        if (inv[1] != null)
+            inv[1] = link.yieldFinishedItem(groupName, inv[1]);
+        if (inv[0] == null && inv[1] == null) {
+            inv[0] = link.getItemsForOperation(groupName, this);
+            if (inv[0] != null)
+                smeltTime = 100;
+        }
+        if (smeltTime > 0) {
+            if (!link.consumePower(10)) return;
+            if (--smeltTime == 0) {
+                inv[1] = FurnaceRecipes.smelting().getSmeltingResult(inv[0]).copy();
+                inv[0] = null;
+            }
+        } else {
+            link.consumePower(1);
+        }
     }
 
     @Override
@@ -89,7 +104,7 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
         super.readFromNBT(tag);
         facing = ForgeDirection.getOrientation(tag.getByte("facing"));
         groupName = tag.getString("groupName");
-        if (groupName == null) groupName = "Default";
+        if (groupName.equals("")) groupName = "Default";
         if (tag.hasKey("inventory"))
             inv = InventoryUtil.readInventory(tag.getTagList("inventory"));
     }

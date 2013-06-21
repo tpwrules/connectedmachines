@@ -175,7 +175,7 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
 
     public ItemStack yieldFinishedItem(String group, ItemStack stack) {
         if (!groups.containsKey(group)) return stack;
-        String outputName = groups.get(group)[2];
+        String outputName = groups.get(group)[1];
         if (!ioPorts.containsKey(outputName)) return stack;
         TileInputOutput outputPort = ioPorts.get(outputName);
         boolean changed = false;
@@ -199,9 +199,9 @@ public class TileController extends TileEntity implements ILinkable, IPowerConsu
         for (int slot = 0; slot < outputPort.getSizeInventory(); slot++) {
             ItemStack outStack = outputPort.getStackInSlot(slot);
             if (outStack != null) continue;
-            changed = true;
             outputPort.setInventorySlotContents(slot, stack);
-            stack = null;
+            outputPort.onInventoryChanged();
+            return null;
         }
         if (changed)
             outputPort.onInventoryChanged();
