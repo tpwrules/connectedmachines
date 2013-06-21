@@ -6,7 +6,8 @@ public enum PacketType {
     UPDATE_LINK_STATE,
     GUI_UPDATE,
     GUI_CHANGE,
-    NAME_UPDATE;
+    NAME_UPDATE,
+    GROUP_UPDATE;
 
     // store int -> enum map because java is drain-bamaged and can't do it automatically
     public static PacketType[] values = PacketType.values();
