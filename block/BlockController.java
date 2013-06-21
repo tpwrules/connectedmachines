@@ -66,6 +66,13 @@ public class BlockController extends BlockContainer {
     }
 
     @Override
+    public Icon getIcon(int side, int meta) {
+        if (ForgeDirection.getOrientation(side) == ForgeDirection.SOUTH)
+            return Texture.blockController;
+        return Texture.blockSide;
+    }
+
+    @Override
     public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side) {
         TileController tile = (TileController)world.getBlockTileEntity(x, y, z);
         if (ForgeDirection.getOrientation(side) == ForgeDirection.UP) {

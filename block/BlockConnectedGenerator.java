@@ -63,11 +63,17 @@ public class BlockConnectedGenerator extends BlockContainer implements ITileEnti
         super.breakBlock(world, x, y, z, side, meta);
     }
 
-
     @Override
     public void registerIcons(IconRegister r) {
         Texture.loadTextures(r);
         this.blockIcon = Texture.blockSide;
+    }
+
+    @Override
+    public Icon getIcon(int side, int meta) {
+        if (ForgeDirection.getOrientation(side) == ForgeDirection.SOUTH)
+            return Texture.blockSide;
+        return Texture.blockSide;
     }
 
     @Override

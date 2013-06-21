@@ -71,6 +71,13 @@ public class BlockInputOutput extends BlockContainer implements ITileEntityProvi
     }
 
     @Override
+    public Icon getIcon(int side, int meta) {
+        if (ForgeDirection.getOrientation(side) == ForgeDirection.SOUTH)
+            return Texture.blockSide;
+        return Texture.blockSide;
+    }
+
+    @Override
     public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side) {
         TileInputOutput tile = (TileInputOutput)world.getBlockTileEntity(x, y, z);
         if ((ForgeDirection.getOrientation(side) == ForgeDirection.UP) && (tile.getLink() != null)) {
