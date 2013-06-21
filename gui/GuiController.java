@@ -83,9 +83,20 @@ public class GuiController extends GuiContainer {
     @Override
     protected void actionPerformed(GuiButton button) {
         switch (button.id) {
-            case 0:
-
+            case 2:
+                inputPos = wrap(--inputPos, controller.ioPortList.size());
+                break;
+            case 3:
+                inputPos = wrap(++inputPos, controller.ioPortList.size());
+                break;
+            case 4:
+                outputPos = wrap(--outputPos, controller.ioPortList.size());
+                break;
+            case 5:
+                outputPos = wrap(++outputPos, controller.ioPortList.size());
+                break;
         }
+        updateText();
     }
 
     @Override
