@@ -17,6 +17,7 @@ import tpw_rules.connectedmachines.network.ITileEntityPacketHandler;
 import tpw_rules.connectedmachines.network.InputPacket;
 import tpw_rules.connectedmachines.network.OutputPacket;
 import tpw_rules.connectedmachines.network.PacketType;
+import tpw_rules.connectedmachines.util.InventoryUtil;
 import tpw_rules.connectedmachines.util.WCoord;
 
 public class TileConnectedFurnace extends TileEntity implements ILinkable, ITileEntityPacketHandler, IPowerConsumer, IConnectedMachine {
@@ -26,8 +27,14 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
 
     public String groupName;
 
+    public int smeltTime;
+
+    public ItemStack[] inv;
+
     public TileConnectedFurnace() {
         facing = ForgeDirection.UP;
+        smeltTime = 0;
+        inv = new ItemStack[2];
     }
 
     @Override
@@ -83,6 +90,8 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
         facing = ForgeDirection.getOrientation(tag.getByte("facing"));
         groupName = tag.getString("groupName");
         if (groupName == null) groupName = "Default";
+        if (tag.hasKey("inventory"))
+            inv = InventoryUtil.readInventory(tag.getTagList("inventory"));
     }
 
     @Override
@@ -90,6 +99,7 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
         super.writeToNBT(tag);
         tag.setByte("facing", (byte)facing.ordinal());
         tag.setString("groupName", groupName);
+        tag.setTag("inventory", InventoryUtil.writeInventory(inv));
     }
 
     @Override
