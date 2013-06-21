@@ -98,6 +98,11 @@ public class TileConnectedFurnace extends TileEntity implements ILinkable, ITile
     }
 
     @Override
+    public String getGUIName() {
+        return "Connected Furnace";
+    }
+
+    @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         facing = ForgeDirection.getOrientation(tag.getByte("facing"));
