@@ -80,8 +80,8 @@ public class BlockInputOutput extends BlockContainer implements ITileEntityProvi
     @Override
     public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side) {
         TileInputOutput tile = (TileInputOutput)world.getBlockTileEntity(x, y, z);
-        if ((ForgeDirection.getOrientation(side) == ForgeDirection.UP) && (tile.getLink() != null)) {
-            return Texture.blockLinked;
+        if (ForgeDirection.getOrientation(side) == ForgeDirection.UP) {
+            return tile.getLink() != null ? Texture.blockLinked : Texture.blockUnlinked;
         }
         else if (ForgeDirection.getOrientation(side) == tile.facing) {
             return Texture.blockSide;

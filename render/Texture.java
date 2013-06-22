@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
 
 public class Texture {
+    public static Icon blockUnlinked;
     public static Icon blockLinked;
     public static Icon blockSide;
     public static Icon blockController;
@@ -16,6 +17,7 @@ public class Texture {
     public static void loadTextures(IconRegister r) {
         if (loaded)
             return;
+        blockUnlinked = r.registerIcon("connectedmachines:blockUnlinked");
         blockLinked = r.registerIcon("connectedmachines:blockLinked");
         blockSide = r.registerIcon("connectedmachines:blockSide");
         blockController = r.registerIcon("connectedmachines:blockController");

@@ -79,8 +79,8 @@ public class BlockConnectedGenerator extends BlockContainer implements ITileEnti
     @Override
     public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side) {
         TileConnectedGenerator tile = (TileConnectedGenerator)world.getBlockTileEntity(x, y, z);
-        if ((ForgeDirection.getOrientation(side) == ForgeDirection.UP) && (tile.getLink() != null)) {
-            return Texture.blockLinked;
+        if (ForgeDirection.getOrientation(side) == ForgeDirection.UP) {
+            return tile.getLink() != null ? Texture.blockLinked : Texture.blockUnlinked;
         }
         else if (ForgeDirection.getOrientation(side) == tile.facing) {
             return Texture.blockSide;

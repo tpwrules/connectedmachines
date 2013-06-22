@@ -80,8 +80,8 @@ public class BlockConnectedFurnace extends BlockContainer implements ITileEntity
     @Override
     public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side) {
         TileConnectedFurnace tile = (TileConnectedFurnace)world.getBlockTileEntity(x, y, z);
-        if ((ForgeDirection.getOrientation(side) == ForgeDirection.UP) && (tile.getLink() != null)) {
-            return Texture.blockLinked;
+        if (ForgeDirection.getOrientation(side) == ForgeDirection.UP) {
+            return tile.getLink() != null ? Texture.blockLinked : Texture.blockUnlinked;
         }
         else if (ForgeDirection.getOrientation(side) == tile.facing) {
             return tile.cooking ? Texture.blockConnectedFurnaceActive : Texture.blockConnectedFurnace;
