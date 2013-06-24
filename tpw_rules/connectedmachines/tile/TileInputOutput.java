@@ -18,7 +18,6 @@ import tpw_rules.connectedmachines.network.InputPacket;
 import tpw_rules.connectedmachines.network.OutputPacket;
 import tpw_rules.connectedmachines.network.PacketType;
 import tpw_rules.connectedmachines.util.InventoryUtil;
-import tpw_rules.connectedmachines.util.Util;
 import tpw_rules.connectedmachines.util.WCoord;
 
 public class TileInputOutput extends TileEntity implements ILinkable, ITileEntityPacketHandler, IInventory, IPowerConsumer {
